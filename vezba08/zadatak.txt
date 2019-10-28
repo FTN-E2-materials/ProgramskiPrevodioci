@@ -1,0 +1,21 @@
+Zadatak 1
+
+Proširiti miniC izraze conditional operatorom:
+
+    "(" <uslov> ")" "?" <izraz1> ":" <izraz2>
+    
+<uslov> predstavlja relacioni izraz
+<izraz1> i <izraz2> predstavljaju promenljivu, parametar ili konstantu
+<izraz1> i <izraz2> su istog tipa
+
+Realizovati generisanje koda za conditional operator.
+
+Primer 1:
+
+    a = (a == b) ? a : 0;
+
+
+Primer 2:
+
+    a = a + (a == b) ? a : b + 3;
+

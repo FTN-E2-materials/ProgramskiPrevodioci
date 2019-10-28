@@ -1,0 +1,77 @@
+Zadatak 1
+
+Proširiti miniC gramatiku tako da omogući
+definisanje lokalnih promenljivih unutar bloka
+i realizovati sledeće semantičke provere:
+- lokalna promenljiva koja je definisana unutar bloka
+  važi od momenta deklaracije do kraja tog bloka
+- ako postoje 2 promenljive koje se isto zovu
+  a definisane su u 2 ugnježdena bloka, onda
+  u unutrašnjem bloku važi unutrašnja promenljiva,
+  a u spoljašnjem bloku spoljašnja promenljiva.
+
+Primer:
+
+  int main() {
+    int x;
+    int y;
+    x = 2;
+    y = 3;
+    {
+      int x;        // nova promenljiva x (lokalna za ovaj blok)
+      x = 5;
+      y = x + y;    // y = 8; 
+                    // koristi se unutrašnja promenljiva x
+                    // i spoljašnja promenljiva y
+    }
+    return x + y;   // 10 (spoljašnji x i y)
+  }
+
+  int main() {
+    int x;
+    x = 2;
+    {
+      int z;
+      x = 5;
+    }
+    return x + z;   // error - z se ne vidi van bloka
+  }
+
+
+POMOĆ:
+- funkcija print_symtab() radi prikaz tabele simbola
+- polje atr2 za VAR je neiskorišćeno
+- funkcija clear_symbols(begin_index) radi 
+  brisanje tabele simbola od elementa begin_index
+- funkcija get_last_element() vraća indeks
+  poslednjeg popunjenog elementa iz tabele simbola
+
+
+Zadatak2
+
+Proširiti miniC gramatiku for iskazom koji ima sledeći oblik:
+
+  "for" "(" <type> <id1> "=" <lit> ";" <relation> ";" <id2> "++" ")"
+     <stmt>
+
+gde je 
+<type> tip podatka (int ili unsigned)
+<id1> i <id2> su identifikatori
+<relation> relacioni izraz
+<stmt> statement
+
+Realizovati sledeće semantičke provere:
+a) <id1> treba da bude lokalna promenljiva za for iskaz
+   (sledeći for iskaz može da definiše iterator sa istim imenom)
+b) tip literala <lit> treba da bude isti kao tip promenljive <id1>
+c) <id1> i <id2> treba da budu ista promenljiva 
+
+NAPOMENA: Ispravno tretirati ugnježdene for iskaze.
+
+Primer ispravnog for iskaza:
+
+  int x;
+  x = 0;
+  for (int i = 0; i < 8; i++)
+    x = x + i;
+

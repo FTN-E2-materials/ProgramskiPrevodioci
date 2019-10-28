@@ -1,0 +1,19 @@
+Zadatak 1
+
+Proširiti tekst gramatiku upitnim i uzvičnim rečenicama,  
+i na kraju programa ispisati koliko ima upitnih, koliko
+uzvičnih i koliko izjavnih rečenica.
+
+Zadatak 2
+
+Proširiti tekst gramatiku tako da se bilo koje dve 
+reči u rečenici mogu odvojiti jednim zarezom. 
+Zarez ne sme da se pojavi iza poslednje reči.
+
+Zadatak 3
+
+Proširiti tekst gramatiku pasusima:
+  Tekst je niz od jednog ili više pasusa.
+  Pasus je niz od jedne ili više rečenica.
+  Pasusi su odvojeni bar jednim znakom NEWLINE.
+Na kraju programa ispisati ukupan broj pasusa.

@@ -1,0 +1,31 @@
+Zadatak 1
+
+Proširiti miniC iskaze for petljom koja izgleda ovako:
+
+  "for" _LPAREN <name> "=" <lit> ";" <rel> ";" <name> "++")
+      <statement>
+
+gde je:
+<name> ime lokalne promenljive ili parametra
+<lit>  literal
+<rel>  relacioni izraz
+"++"   inkrement operator
+
+<name> mora biti deklarisano pre upotrebe
+<name> i <lit> treba da budu istog tipa
+
+Realizovati generisanje koda za for petlju.
+- Inicijalizacija iteratora se vrši samo jednom,
+  pre prvog izvršavanja tela petlje.
+- Tačnost relacije se proverava na početku svake iteracije.
+- Inkrementiranje iteratora se vrši na kraju svake iteracije.
+
+Napomena: Petlje mogu biti i ugnježdene.
+
+Primer:
+  int suma;
+  int i;
+  suma = 0;
+  for(i = 0; i < 5; i++)
+    suma = suma + i;
+

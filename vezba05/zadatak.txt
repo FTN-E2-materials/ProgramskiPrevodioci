@@ -1,0 +1,35 @@
+Zadatak 1
+
+Proširiti miniC gramatiku novim tipom podatka "void".
+Tip void se može pojaviti samo kao povratni tip funkcije,
+ali ne i kao tip promenljive ili parametra (u tom slučaju
+treba prijaviti semantičku grešku). 
+Raditi sa tokenom _TYPE (slično kao int).
+
+Zadatak 2
+
+Proširiti miniC gramatiku novim return iskazom koji ima oblik:
+
+        "return" ";"
+
+Realizovati sledeće semantičke provere:
+1) ako se u void funkciji nađe "return exp ;" 
+   treba prijaviti semantičku grešku, jer 
+   funkcija ne bi trebala da vrati vrednost
+2) ako se u non-void funkciji nađe "return;"
+   treba prijaviti warning jer se očekuje 
+   da funkcija vrati neku vrednost
+3) ako se u non-void funkciji ne pojavi 
+   return naredba, treba prijaviti warning 
+   jer se očekuje da funkcija vrati neku vrednost
+
+    -----------------------------------------------
+            tip f-je: |  void   |  int/unsigned
+    -----------------------------------------------
+      return exp ;    |  error  |  OK
+    -----------------------------------------------
+      return ;        |   OK    |  warning
+    -----------------------------------------------
+      bez return      |   OK    |  warning
+    -----------------------------------------------
+

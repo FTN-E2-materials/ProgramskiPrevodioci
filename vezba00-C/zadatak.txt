@@ -1,0 +1,41 @@
+Napraviti C program za analizu ulaznog teksta na osnovu tekst gramatike. Program treba da prepoznaje simbole: 
+- reči koje počinju velikim slovom
+- reči koje počinju malim slovom i
+- tačku. 
+Reči su u tekstu razdvojene belinama (razmak, tabulator, novi red). 
+Za svaki prepoznati simbol, program u novom redu treba da ispiše ime tokena (CWORD, WORD ili DOT) i string reči.
+Ukoliko program, u toku analize teksta, sa ulaza preuzme znak koji nije definisan gramatikom simbola, treba da u novom redu ispiše "GRESKA:" i iza toga znak koji nije u skladu sa gramatikom.
+
+Za izradu mogu biti korisne sledeće C biblioteke i funkcije:
+
+#include <ctype.h>
+#include <stdio.h>
+
+int getc(FILE* stdin)       //funkcija koja preuzima prvi znak sa standardnog ulaza
+primer korišćenja: c = getc(stdin);
+
+ungetc(int c,FILE* stdin)   //funkcija koja vraća znak na početak standardnog ulaza
+primer korišćenja: ungetc(c, stdin);
+
+isupper(ch)      //logička funkcija
+islower(ch)      //logička funkcija
+EOF              //oznaka za kraj datoteke
+
+Preusmeravanje ulaza kod pokretanja programa se može uraditi sa:
+./a.out < tekst.txt
+
+Pomoć: pogledati dijagram skenera za tekst gramatiku sa slajdova
+
+
+Za ulaz: "Ovo je tekst." izlaz treba da bude:
+CWORD   Ovo
+WORD    je
+WORD    tekst
+DOT     .
+
+--------------------------------------------------------------------------------
+DODATNO 1:
+Napraviti C program koji analizira ulazni tekst i ispisuje:
+a) reči kojima počinju rečenice
+b) reči kojima završavaju rečenice
+

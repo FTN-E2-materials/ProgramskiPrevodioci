@@ -1,0 +1,32 @@
+Dodatni zadatak 1
+
+Proširiti mC gramatiku if iskaza tako da se kao uslov mogu koristiti
+logički izrazi (bez malih zagrada) kao u primeru:
+    if (a < 3 && b < 4) ...
+Proširenje napraviti uvođenjem još jednog nivoa u izrazima (log_exp)
+koji se naslanja na relacioni izraz i dodaje operatore && i ||.
+Nakon proširenja, gramatika za if_part treba da izgleda:
+
+   if_part : _IF _LPAREN log_exp _RPAREN statement 
+
+
+
+Dodatni zadatak 2
+
+Proširiti mC gramatiku BASIC for petljom:
+    "for" <id1> "=" <const1> <direction> <const2> [ "step" <const3> ]
+        <statement>
+    "next" <id2>
+gde su <id1> i <id2> identifikatori, <const1> do <const3> su konstante,
+<direction> je jedna od ključnih reči "to" ili "downto", dok je deo
+[ "step" <const3> ] opcion.
+
+Primeri:
+for i = 1 to 9
+    a = a + 1;
+next i
+
+for j = 10 downto 0 step 2
+    a = a - 1;
+next j
+

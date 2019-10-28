@@ -1,0 +1,41 @@
+Proširiti miniC gramatiku pojednostavljenim switch iskazom. 
+Sintaksa switch iskaza ima oblik:
+
+"switch" "(" <switch_expression> ")" "{"
+    "case" <constant_expression> ":" <case_body> [ "break" ";" ]
+     ...
+    [ "default" ":" <default_statement> ]
+"}"
+
+gde je
+<switch_expression> ime promenljive
+<constant_expression> konstanta
+<case_body> iskaz (statement)
+<default_statement> iskaz (statement)
+
+Pri tome:
+- Mora postojati bar jedna case naredba.
+- break naredba se opciono može pojaviti samo na kraju case naredbe.
+- default naredba je opciona i može se pojaviti samo posle svih case naredbi
+
+Realizovati sledeće semantičke provere:
+- Promenljiva u <switch_expression> mora biti prethodno deklarisana
+- Konstante u svim case iskazima moraju biti jedinstvene
+- Tip konstante u case naredbi mora biti isti kao tip promenljive
+  u <switch_expression>
+
+NAPOMENA: 
+Prilikom testiranja ne treba testirati ugnježdene switch iskaze.
+
+Primer:
+  switch(state) {
+    case 1: x = 1; break;
+    case 2: { x = 5;} break;
+    default: x = 10;
+  }
+
+  switch(state) { //bez default naredbe
+    case 1: x = 1; break;
+    case 2: { x = 5;} break;
+  }
+

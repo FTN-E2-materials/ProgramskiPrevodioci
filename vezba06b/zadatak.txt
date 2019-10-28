@@ -1,0 +1,37 @@
+Proširiti miniC gramatiku iskazom koji predstavlja definiciju ugnježdene funkcije.
+Sintaksa ugnježdene funkcije ima oblik:
+
+  "function" <ret_type> [ "(" <par_type> <par_id> ")"] <f_name> "->" <statement>
+
+<ret_type>    tip povratne vrednosti funkcije
+<par_type>    tip parametra
+<par_id>      ime parametra
+<f_name>      ime funkcije
+<statement>   iskazi (statement)
+
+Funkcija može a ne mora imati parametar.
+Iza znaka "->" se navode iskazi koji predstavljaju telo funkcije.
+Ovakva funkcija nema lokalnih promenljivih.
+Ugnježdena funkcija može rekurzivno pozvati samu sebe. 
+
+Definicija ugnježdene funkcije je zaseban iskaz.
+
+Semantika ugnježdene funkcije:
+Opseg važenja ove funkcije je od mesta njene definicije pa do kraja miniC funkcije u kojoj je definisana
+  - ne može se pozvati pre nego što je definisana
+  - ne može se pozvati izvan miniC funkcije u kojoj je definisana
+  - ne mogu se definisati 2 ugnježdene funkcije sa istim imenom unutar jedne miniC funkcije 
+  - ugnježdena funkcija i miniC funkcija ne mogu imati isto ime
+  - ugnježdena funkcija može da koristi (vidi) sve lokalne promenljive funkcije u kojoj je definisana.
+Ugnježdena funkcija se poziva na isti način kao i miniC funkcija:
+  inc(3)  //ime funkcije iza kog se u zagradama navodi argument (ukoliko postoji)
+
+Primeri testiranja:
+
+function int (int x) inc -> x = x + 1;
+function unsigned (unsigned x) dup -> { return x + x; }
+
+Primeri testiranja:
+- testirati dve iste ugnježdene funkcije definisane u dve različite miniC funkcije //OK
+- testirati dve iste ugnježdene funkcije definisane u istoj miniC funkciji //semantička greška
+

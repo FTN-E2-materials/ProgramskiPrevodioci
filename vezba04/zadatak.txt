@@ -1,0 +1,32 @@
+Zadatak 1
+
+Proširiti miniC gramatiku tako da se u jednoj deklaraciji
+može deklarisati više promenljivih odvojenih zarezom i
+realizovati semantičku proveru:
+1) promenljiva ne sme biti prethodno deklarisana.
+
+Zadatak 2
+
+Proširiti (samo) miniC izraze postinkrement operatorom.
+Realizovati semantičku proveru:
+1) postinkrement operator može da se primeni samo na
+   promenljive i parametre (a ne, recimo, na funkcije).
+
+Zadatak 3
+
+Proširiti miniC gramatiku 'do while' iskazom.
+Sintaksa 'do while' iskaza ima oblik:
+
+    "do" 
+        <statement> 
+    "while" "(" <id> <relop> <lit> ")" ";"
+
+<statement> predstavlja jednu naredbu ili blok naredbi
+<id> predstavlja identifikator
+<relop> predstavlja jedan od relacionih operatora
+<lit> predstavlja literal
+
+Realizovati semantičke provere: 
+1) <id> mora biti postojeca promenljiva ili parametar
+2) <id> i <lit> moraju biti istog tipa.
+

@@ -1,0 +1,50 @@
+Zadatak 1
+
+Proširiti miniC gramatiku globalnim promenljivim i 
+napraviti generisanje koda za njih.
+Primer deklaracije:
+
+int a;
+
+Izgenerisani kod za datu deklaraciju:
+
+a:
+     WORD    1
+
+Ako je a globalna promenljiva, tada za iskaz dodele:
+
+    a = a + 1;
+
+treba da bude izgenerisan sledeći kod:
+
+    ADDS    a,$1,%0
+    MOV     %0,a
+
+Realizovati semantičku proveru:
+promenljiva ne sme biti prethodno deklarisana.
+
+POMOĆ:
+Globalni i lokalni identifikatori mogu imati isto
+ime, pa se u tabeli simbola moraju razlikovati.
+
+
+
+Zadatak 2
+
+Napraviti generisanje koda za postinkrement iskaz.
+Primer iskaza:
+
+  x++;
+
+Primer izgenerisanog koda (za prvu lokalnu promenljivu):
+
+  ADDS    -4(%14),$1,-4(%14)
+
+Primer izgenerisanog koda (za globalnu promenljivu):
+
+  ADDS    x,$1,x
+
+Realizovati semantičku proveru: 
+postinkrement operator može da se primeni samo na 
+promenljive (lokalne i globalne) i parametre.
+

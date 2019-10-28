@@ -1,0 +1,9 @@
+Dodatni zadatak
+
+Proširiti miniC gramatiku višestrukim dodelama:
+
+    a = b = c = d = e + 5;
+
+Pri tome, za svaki znak "=", obe strane jednakosti moraju
+imati isti tip i svi identifikatori moraju biti definisani.
+

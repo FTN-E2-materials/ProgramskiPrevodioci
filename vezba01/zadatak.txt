@@ -1,0 +1,50 @@
+Zadatak 1
+
+Napraviti skener koji prepoznaje:
+
+a) cele brojeve: +45645  -4356  642642  +1 
+
+b) heksadecimalne brojeve: započinju cifrom 0, iza sledi malo ili veliko slovo 'x',
+   a zatim najmanje jedna, a najviše 4 heksadecimalne cifre.
+   0x7A3F  0X1234  0xf  0x123  0xffce
+
+c) realne brojeve (tačka i bar jedna cifra pre tačke su obavezni):
+   2.345  0.0  5.  123.456  +123.456  -123.456
+
+   Dodatno: realni brojevi su i brojevi oblika
+   12.345e+123  5.e-4  -1.23E+04
+   gde eksponencijalni deo može imati 1-3 cifre.
+   Realizovati u okviru istog regularnog izraza za realne brojeve. 
+   Ako eksponencijalni deo realnog broja postoji, moraju postojati svi njegovi elementi.
+
+d) ključnu reč "break", ali case-insensitive
+   break
+   BrEaK
+
+
+Zadatak 2
+
+Napraviti skener koji prepoznaje single-line komentar (//) i izbacuje ga iz koda.
+Za testiranje se može koristiti test2.c, izlaz treba da bude početni kod, sa 
+izostavljenim linijama koje pocinju stringom "//".
+Za domaći: rešiti prepoznavanje blok komentara (pogledati i rešenje u zbirci)
+NAPOMENA: Za zadatak napraviti novi .l fajl
+
+
+Zadatak 3
+
+Napraviti skener koji u ulaznom tekstu temperaturu izraženu u Farenhajtima prepravlja 
+u temperaturu izraženu u Celzijusima. Ostatak teksta treba da ostane isti.
+(°F  -  32)  x  5/9 = °C
+NAPOMENA: Za zadatak napraviti novi .l fajl
+
+Na primer, tekst:
+Normalna temperatura ljudskog tela je 98F.
+Temperatura od 50F je daleko ispod proseka za mesec maj.
+Voda kljuca na 212F.
+
+treba da se prevede u:
+Normalna temperatura ljudskog tela je 36C.
+Temperatura od 10C je daleko ispod proseka za mesec maj.
+Voda kljuca na 100C.
+

@@ -1,0 +1,5 @@
+DODATNO:
+
+Proširiti miniC numeričke izraze operacijama * i /.
+Operacije * i / treba da budu većeg prioriteta od + i -.
+

@@ -1,0 +1,32 @@
+Zadatak 1
+
+Proširiti miniC gramatiku 'do while' iskazom.
+Sintaksa 'do while' iskaza ima oblik:
+
+    "do" 
+        <statement> 
+    "while" "(" <condition> ")" ";"
+
+Pojam <statement> predstavlja jednu naredbu ili blok naredbi.
+Pojam <condition> predstavlja relacioni izraz.
+
+Zadatak 2
+
+Deklaracija miniC promenljive omogućuje deklaraciju
+samo jedne promenljive:
+   int a;
+Proširiti miniC gramatiku tako da se u jednoj deklaraciji
+može deklarisati više promenljivih, odvojenih zarezom:
+   int a, b, c;
+
+
+Zadatak 3
+
+Proširiti miniC gramatiku postinkrement operatorom,
+koji se može primeniti samo na identifikator.
+Postinkrement operator se može pojaviti
+a) unutar izraza
+     a = b + c++ - 5;
+b) kao poseban iskaz
+     a++;
+
