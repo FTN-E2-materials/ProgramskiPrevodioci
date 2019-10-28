@@ -9,6 +9,11 @@
 
 [bB][rR][eE][aA][kK]  { printf("kljucna rec : %s\n", yytext); }
 
+"//".*
+
+[0-9]+F  { printf("%d°C", ( (atoi(yytext) - 32) * 5/9 )); }
+
+
 %%
 
 int main() {
