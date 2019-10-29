@@ -23,6 +23,9 @@
 %token _SEMICOLON
 %token _AROP
 %token _RELOP
+%token _DO
+%token _WHILE
+
 
 %nonassoc ONLY_IF
 %nonassoc _ELSE
@@ -64,6 +67,10 @@ variable
   : type _ID _SEMICOLON
   ;
 
+
+
+
+
 statement_list
   : /* empty */
   | statement_list statement
@@ -74,6 +81,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+	| do_statement
   ;
 
 compound_statement
@@ -118,6 +126,10 @@ if_statement
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
+
+do_statement
+	: _DO statement _WHILE _LPAREN rel_exp _RPAREN _SEMICOLON
+
 
 rel_exp
   : num_exp _RELOP num_exp
