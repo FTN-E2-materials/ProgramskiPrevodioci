@@ -1,5 +1,8 @@
 int abs(int i) {
   int res,marko;
+  marko=0;
+	marko=marko++;
+	marko++;
   if(i < 0)
     res = 0 - i;
   else 

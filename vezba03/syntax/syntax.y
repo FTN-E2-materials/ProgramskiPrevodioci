@@ -26,7 +26,7 @@
 %token _DO
 %token _WHILE
 %token _COMMA
-
+%token _INC
 
 %nonassoc ONLY_IF
 %nonassoc _ELSE
@@ -86,6 +86,7 @@ statement
   | if_statement
   | return_statement
 	| do_statement
+	| inc_statement
   ;
 
 compound_statement
@@ -96,6 +97,10 @@ assignment_statement
   : _ID _ASSIGN num_exp _SEMICOLON
   ;
 
+inc_statement
+	: _ID _INC _SEMICOLON
+	;
+
 num_exp
   : exp
   | num_exp _AROP exp
@@ -104,6 +109,7 @@ num_exp
 exp
   : literal
   | _ID
+	| _ID _INC
   | function_call
   | _LPAREN num_exp _RPAREN
   ;

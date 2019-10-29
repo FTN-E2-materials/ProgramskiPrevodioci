@@ -17,6 +17,7 @@
 "do"                 { return _DO; }
 "while"              { return _WHILE; }
 ","		     { return _COMMA; }
+"++"		     { return _INC; }
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }
