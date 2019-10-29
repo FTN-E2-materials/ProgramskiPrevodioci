@@ -62,7 +62,8 @@ extern int yydebug;
     _RELOP = 272,
     _DO = 273,
     _WHILE = 274,
-    ONLY_IF = 275
+    _COMMA = 275,
+    ONLY_IF = 276
   };
 #endif
 

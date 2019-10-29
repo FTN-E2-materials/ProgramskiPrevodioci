@@ -16,7 +16,7 @@
 "return"             { return _RETURN; }
 "do"                 { return _DO; }
 "while"              { return _WHILE; }
-
+","		     { return _COMMA; }
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }

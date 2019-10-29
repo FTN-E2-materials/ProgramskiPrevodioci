@@ -25,6 +25,7 @@
 %token _RELOP
 %token _DO
 %token _WHILE
+%token _COMMA
 
 
 %nonassoc ONLY_IF
@@ -64,10 +65,13 @@ variable_list
   ;
 
 variable
-  : type _ID _SEMICOLON
+  : vars _SEMICOLON
   ;
 
-
+vars
+	: type _ID
+	| vars _COMMA _ID
+	;
 
 
 

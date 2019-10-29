@@ -1,5 +1,5 @@
 int abs(int i) {
-  int res;
+  int res,marko;
   if(i < 0)
     res = 0 - i;
   else 
