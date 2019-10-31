@@ -39,6 +39,7 @@ sentence
   | words UZVICNIK {brojacUzvicnih++;}
   ;
 
+
 words 
   : CAPITAL_WORD
   | words WORD
@@ -46,6 +47,7 @@ words
   | words ZAREZ WORD
   | words ZAREZ CAPITAL_WORD
   ;
+
 
 %%
 

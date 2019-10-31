@@ -14,10 +14,17 @@
 "if"                 { return _IF; }
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
-"do"                 { return _DO; }
-"while"              { return _WHILE; }
-","		     { return _COMMA; }
-"++"		     { return _INC; }
+"do"								 { return _DO; }
+"while"							 { return _WHILE;}
+","									 { return _COMMA;}
+"++"								 { return _INC; }
+"&&"								 { return _LOGOP;}
+"||" 								 { return _LOGOP; }
+"for"								 { return _FOR;}
+"to"								 { return _DIRECTION; }
+"downto"						 { return _DIRECTION; }
+"step"							 { return _STEP; }
+"next" 							 { return _NEXT; }
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }

@@ -27,6 +27,11 @@
 %token _WHILE
 %token _COMMA
 %token _INC
+%token _LOGOP
+%token _FOR
+%token _DIRECTION
+%token _NEXT
+%token _STEP
 
 %nonassoc ONLY_IF
 %nonassoc _ELSE
@@ -74,7 +79,6 @@ vars
 	;
 
 
-
 statement_list
   : /* empty */
   | statement_list statement
@@ -87,6 +91,7 @@ statement
   | return_statement
 	| do_statement
 	| inc_statement
+	| for_statement
   ;
 
 compound_statement
@@ -98,13 +103,17 @@ assignment_statement
   ;
 
 inc_statement
-	: _ID _INC _SEMICOLON
-	;
+	: _ID _INC _SEMICOLON;
 
 num_exp
   : exp
   | num_exp _AROP exp
   ;
+
+log_exp
+	: rel_exp
+	| log_exp _LOGOP rel_exp
+	;
 
 exp
   : literal
@@ -134,11 +143,22 @@ if_statement
   ;
 
 if_part
-  : _IF _LPAREN rel_exp _RPAREN statement
+  : _IF _LPAREN log_exp _RPAREN statement
   ;
 
 do_statement
 	: _DO statement _WHILE _LPAREN rel_exp _RPAREN _SEMICOLON
+	;
+
+for_statement
+	: _FOR _ID _ASSIGN literal _DIRECTION literal opciono statement _NEXT _ID
+	;
+
+opciono
+	: /* empty */
+	| _STEP literal
+	;
+
 
 
 rel_exp
