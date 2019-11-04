@@ -1,28 +1,17 @@
-//OPIS: if iskazi ugnjezdeni
-//RETURN: 3
-
-int f() {
-  int a;
-  int b;
-  int c;
-
-  a = 0;
-  b = 3;
-  c = 6;
-
-  if(a >= b)
-    c = c + 3;  
-  else
-    if(a > b)
-      c = c + 3;  
-    else
-      c = c - 3; 
-
-  return c;
-}
-
+//OPIS: dve petlje između iskaza
 int main() {
-  int r;
-  r = f(); 
-  return r;       
+    int a;
+    unsigned b;
+    if (a == 0)
+        b = 5u;
+    do
+      b = b + 1u;
+    while (b < 100u);
+    do
+      a = a + 1;
+    while (a < 100);
+    if (b == 10u)
+        a = 5;
+    a = a - 30;
 }
+

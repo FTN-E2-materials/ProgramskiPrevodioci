@@ -1,23 +1,14 @@
-//OPIS: Numerički izraz
-//RETURN: 20
-
-int fja() {
-  int z;
-  int a;
-  int b;
-  int c;
-  int d;
-  z = 2;
-  a = 4;
-  b = 6;
-  c = 8;
-  d = 10;
-  z = a+( (b-(c+d)) - ((b+c)-((d+ 1)+ ((a+ 1)- ((c+a)-(a-c))))) );
-  return z;
-}
-
+//OPIS: dve petlje unutar if-a
 int main() {
-  int r;
-  r = fja();
-  return r + 42;        
+    int a;
+    unsigned b;
+    if (a == 0)
+        do
+          a = a + 1;
+        while (a < 100);
+    else
+        do
+          b = b + 1u;
+        while (b < 100u);
 }
+

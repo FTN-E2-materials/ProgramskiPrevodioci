@@ -1,8 +1,8 @@
-//OPIS: pogrešan tip
+//OPIS: nepostojeća promenljiva
 int main() {
     unsigned a;
     do
       a = a + 2u;
-    while (a < 42);
+    while (b < 42);
 }
 

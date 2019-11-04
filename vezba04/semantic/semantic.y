@@ -37,9 +37,14 @@
 %token _SEMICOLON
 %token <i> _AROP
 %token <i> _RELOP
+%token _COMMA
+%token _INC
+%token _DO
+%token _WHILE
 
 %type <i> type num_exp exp literal
 %type <i> function_call argument rel_exp
+%type <i> vars
 
 %nonassoc ONLY_IF
 %nonassoc _ELSE
@@ -106,14 +111,33 @@ variable_list
   ;
 
 variable
-  : type _ID _SEMICOLON
+  : vars _SEMICOLON
+
+  ;
+
+vars
+	: type _ID
       {
         if(lookup_symbol($2, VAR|PAR) == -1)
            insert_symbol($2, VAR, $1, ++var_num, NO_ATR);
         else 
            err("redefinition of '%s'", $2);
+				$$=$1;
+				//vars nosi sad tip 
+				//jer $$ je vrednost pojma s leve strane pravila
       }
-  ;
+
+	| vars _COMMA _ID
+      {
+				//u $1 tj u varsu je type od gore ( $$ = $1)
+        if(lookup_symbol($3, VAR|PAR) == -1)
+           insert_symbol($3, VAR, $1, ++var_num, NO_ATR);
+        else 
+           err("redefinition of '%s'", $3);
+				$$=$1;
+				//u slucaju da imamo 2,3,4.. promenljivih va
+      }
+	;
 
 statement_list
   : /* empty */
@@ -125,6 +149,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+	| do_while
   ;
 
 compound_statement
@@ -135,6 +160,7 @@ assignment_statement
   : _ID _ASSIGN num_exp _SEMICOLON
       {
         int idx = lookup_symbol($1, VAR|PAR);
+//sme var|par s leve strane,ostalo ne 
         if(idx == -1)
           err("invalid lvalue '%s' in assignment", $1);
         else
@@ -160,6 +186,13 @@ exp
         if($$ == -1)
           err("'%s' undeclared", $1);
       }
+	| _ID _INC
+      {
+        $$ = lookup_symbol($1, VAR|PAR);
+        if($$ == -1)
+          err("'%s' undeclared", $1);
+      }
+		
   | function_call
   | _LPAREN num_exp _RPAREN
       { $$ = $2; }
@@ -211,6 +244,20 @@ if_statement
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
+
+do_while
+	:	_DO statement _WHILE _LPAREN _ID _RELOP literal _RPAREN _SEMICOLON
+		{
+			int index=lookup_symbol($5,VAR|PAR);
+			if(index == -1){
+				err("promenljiva ne postoji u tvom kodu");
+			}
+			if( get_type(index) != get_type($7) ){
+				err("promenljiva i literal moraju biti istog tipa!");
+			}
+
+		}
+	;
 
 rel_exp
   : num_exp _RELOP num_exp

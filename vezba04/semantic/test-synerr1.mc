@@ -1,14 +1,9 @@
-//OPIS: Nedostaje num_exp kod return
-
-int abs(int i) {
-  int res;
-  if(i < 0)
-    res = 0 - i;
-  else 
-    res = i; 
-  return ;
-}
-
+//OPIS: dva iskaza
 int main() {
-  return abs(-5);
+    int a;
+    do
+      a = a + 1;
+      a = a + 2;
+    while (a < 100);
 }
+

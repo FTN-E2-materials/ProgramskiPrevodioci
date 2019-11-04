@@ -1,14 +1,8 @@
-//OPIS: Pogrešan tip konstante u rel_exp
-
-int abs(int i) {
-  int res;
-  if(i < 0u)
-    res = 0 - i;
-  else 
-    res = i; 
-  return res;
-}
-
+//OPIS: pogrešan tip
 int main() {
-  return abs(-5);
+    int a;
+    do
+      a = a + 1;
+    while (a < 100u);
 }
+

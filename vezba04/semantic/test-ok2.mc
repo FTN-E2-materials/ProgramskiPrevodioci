@@ -1,33 +1,12 @@
-//OPIS: Konstante
-//RETURN: 110
-
-int f(int x) {
-  int z;
-  return x + z;
-} 
-
-int y() {
-  return 2147483647; //max int
-}
-
+//OPIS: dve petlje
 int main() {
-  int a;
-  unsigned b;
-  a = 0;
-
-  if (a < -10)
-    a = f(a + 3);
-  else
-    a = y();
-  a = -556;
-
-  return a + 666;   //110
+    int a;
+    unsigned b;
+    do
+      a = a + 1;
+    while (a < 100);
+    do
+      b = b + 1u;
+    while (b < 100u);
 }
 
-unsigned z() {
-  unsigned b;
-  b = 16u;
-  if (b < 10u)
-    b = 3u;
-  return b + 4u;
-}
