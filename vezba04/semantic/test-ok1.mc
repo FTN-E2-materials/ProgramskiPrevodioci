@@ -1,8 +1,9 @@
 //OPIS: jedna petlja
 int main() {
-    int a;
+    int a,b,c;
+
     do
-      a = a + 1;
-    while (a < 100);
+      b = c = a + 1;
+    while (b < 100);
 }
 

@@ -15,6 +15,9 @@
   int var_num = 0;
   int fun_idx = -1;
   int fcall_idx = -1;
+	int indeks1=-1;
+	int indeks2=-1;					//promenljive indeks1,2 sluze za proveru u assignment iskazu
+
 %}
 
 %union {
@@ -45,7 +48,9 @@
 %type <i> type num_exp exp literal
 %type <i> function_call argument rel_exp
 %type <i> vars
-
+//ima dodatnu vrednost stavimo to <i>
+//ako negde stavim $$=nesto,moramo staviti ovde %type <i> taj iskaz
+%type <i> assignment												//dodajemo jer ce assignment da prima vrednost preko $$
 %nonassoc ONLY_IF
 %nonassoc _ELSE
 
@@ -125,6 +130,9 @@ vars
 				$$=$1;
 				//vars nosi sad tip 
 				//jer $$ je vrednost pojma s leve strane pravila
+				//gore moramo dodati %type <i> vars ili %type <s> vars ako hocemo vars
+				//da ima mogucnost da bude tipa string
+				//vars ce nositi type,kako bi posle mogli da znamo koji je tip 
       }
 
 	| vars _COMMA _ID
@@ -135,7 +143,7 @@ vars
         else 
            err("redefinition of '%s'", $3);
 				$$=$1;
-				//u slucaju da imamo 2,3,4.. promenljivih va
+				//ako imam 3,4,5... promenljivih da za tu 3,4,5.. znamo tip      
       }
 	;
 
@@ -157,17 +165,33 @@ compound_statement
   ;
 
 assignment_statement
-  : _ID _ASSIGN num_exp _SEMICOLON
-      {
-        int idx = lookup_symbol($1, VAR|PAR);
-//sme var|par s leve strane,ostalo ne 
-        if(idx == -1)
-          err("invalid lvalue '%s' in assignment", $1);
-        else
-          if(get_type(idx) != get_type($3))
-            err("incompatible types in assignment");
-      }
+  : assignment num_exp _SEMICOLON
+	{
+		if(get_type($1) != get_type($2) )		//provera da li je promenljiva s leve strane istog tipa kao i izraz sa desne
+			err("Uneta promenljiva nije korespodentnog tipa kao i numericki izraz !");
+	}
   ;
+
+assignment
+	: _ID _ASSIGN
+	{
+		indeks1 = lookup_symbol($1,VAR|PAR);
+		if(indeks1 == -1)										//provera da li ta promenljiva uopste postoji
+			err("Uneta je promenljiva koja uopste ne postoji ! ");
+		$$=indeks1;													//prenosimo njen indeks u assignment
+	}
+	| assignment _ID _ASSIGN
+	{
+		indeks2=lookup_symbol($2,VAR|PAR);
+		if(indeks2 == -1)										//provera da li ta promenljiva uopste postoji
+			err("Uneta je promenljiva koja uopste ne postoji ! ");
+		
+		if(get_type(indeks2) != get_type($1) )
+			err("Unete promenljive s leve i desne strane nisu istog tipa!");
+		$$=indeks2;													//prenosimo njen indeks u assignment
+		
+	}
+	;
 
 num_exp
   : exp

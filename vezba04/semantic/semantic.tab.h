@@ -73,7 +73,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 20 "semantic.y" /* yacc.c:1909  */
+#line 23 "semantic.y" /* yacc.c:1909  */
 
   int i;
   char *s;
