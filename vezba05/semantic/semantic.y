@@ -300,9 +300,21 @@ rel_exp
 return_statement
   : _RETURN num_exp _SEMICOLON
       {
-        if(get_type(fun_idx) != get_type($2))
-          err("incompatible types in return");
+				if(get_type(fun_idx) == VOID)
+					err("Funkcija ne moze vratiti vrednost,jer je tipa VOID");
+				else{
+					// u slucaju da nije void tipa,treba proveriti konzistentnost tipa promenljive i fje
+		      if(get_type(fun_idx) != get_type($2))
+		        err("incompatible types in return");
+				
+				}
       }
+	| _RETURN _SEMICOLON
+			{
+				if(get_type(fun_idx) != VOID )
+					err("Funkcija mora da bude tipa void jer ste napisali return ; ");
+			}
+
   ;
 
 %%
