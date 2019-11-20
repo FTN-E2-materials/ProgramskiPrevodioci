@@ -10,3 +10,4 @@
 ###### V3 - Prosirivanje miniC gramatike [ vise promenljivih u deklaraciji , postinkrement operator , do while iskaz ]
 ###### V4 - Prosirivanje miniC gramatike i semantika [ vise promenljivih u deklaraciji , postinkrement operator , do while iskaz ]
 ###### V5 - Prosirivanje miniC gramatike i semantika [ void i return ; ]
+###### v6 - Prosirivanje miniC gramatike i semantike [ lokalne promenljive unutar bloka i switch iskaz ]
