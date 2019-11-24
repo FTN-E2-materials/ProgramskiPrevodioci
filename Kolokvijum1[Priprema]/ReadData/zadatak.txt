@@ -1,0 +1,23 @@
+Kolokvijum 1
+
+Prosiriti miniC gramatiku read data iskazom u sledecem obliku:
+	read <id> from
+	data <const1> [ , <const2>, <const3>, ... , <constN> ]
+	do <stm> ;
+gde je:
+	<id> - promenljiva ili parametar
+	<constN> - konstanta (literal)
+	<stm> - iskaz
+
+U data sekciji moze biti zadata jedna konstanta ili vise konstanti odvojenih zarezom.
+Mora postojati bar jedna data sekcija u jednom read data iskazu, a moze i vise.
+
+Semanticke provere koje je potrebno sprovesti:
+1. <id> mora biti prethodno deklarisan
+2. tip <id> i tip svih konstanti <constN> mora biti isti
+
+Primer:
+	read x form
+	data 1,2,3,4
+	data 5,6
+	do y = y + x;
