@@ -1,0 +1,12 @@
+-Dodati tip promenljive 'auto'
+-Koja postaje drugi tip kada se promenljivoj dodeli neka vrednost.
+
+NPR:
+	auto a;
+	int b;
+	a=b;
+
+-Tip od a treba da postane int
+
+-Definisati ogranicenja da fja i parametri ne mogu da imaju tip auto.
+-Treba da se prijavi greska ako napises b(int) = a(auto) a da prethono nije dobila tip int
