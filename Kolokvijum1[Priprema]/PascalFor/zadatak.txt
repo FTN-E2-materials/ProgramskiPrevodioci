@@ -1,0 +1,12 @@
+Petlja je bila oblika
+
+for <for_variable> "=" <init_constant> "downto" <final_constant> "do" <for_body>
+
+for_variable = varijabla ili parametar
+init_constant i final_constant = konstante, brojevi
+for_body <- statemment
+
+Od semantickih provera:
+Da li je for_variable prethodno definisan?
+da li su init_constant i final_constant tipovi kao i for_variable
+

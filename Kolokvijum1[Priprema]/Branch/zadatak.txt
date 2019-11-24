@@ -1,0 +1,7 @@
+"branch" "(" <var> ";" <const1> "," <const2> "," <const3> ")"
+"first" statement1
+"second" statement2
+"third" statement3
+
+Konstante moraju biti istog tipa kao i var koja prethodno mora biti definisana. 
+Fiksno tri konstante i tri statementa.

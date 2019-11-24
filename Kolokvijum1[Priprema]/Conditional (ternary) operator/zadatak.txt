@@ -1,0 +1,7 @@
+(exp1) ? (exp2) : (exp3)
+
+exp1 je rel_exp
+
+exp2 moze biti promenjiva,const ili parametar
+
+da li su exp2 i exp3 istog tipa

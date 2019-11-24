@@ -1,0 +1,7 @@
+"compare" "(" var1 ";" var2 ")"
+"greater" statement
+"less" statement
+"equal" statement
+
+Da li su va1 i var2 deklarisane promenjive/parametri i da li su istog tipa
+

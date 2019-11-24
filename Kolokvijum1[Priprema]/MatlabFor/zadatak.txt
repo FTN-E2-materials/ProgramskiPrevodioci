@@ -1,0 +1,10 @@
+"for" "variable" "=" "variable_or_const" ":" "variable_or_const"
+statement;
+
+for i=1:n
+statement;
+
+statement -> sekvenca iskaza
+da li je varijabla i definisana
+sve moraju biti istog tipa
+
