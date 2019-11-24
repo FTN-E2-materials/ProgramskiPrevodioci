@@ -1,5 +1,6 @@
 %{
   #include <stdio.h>
+  #include <stdlib.h>
   #include "defs.h"
   #include "symtab.h"
 
@@ -15,8 +16,7 @@
   int var_num = 0;
   int fun_idx = -1;
   int fcall_idx = -1;
-	int indeks1=-1;
-	int indeks2=-1;					//promenljive indeks1,2 sluze za proveru u assignment iskazu
+	int brojac_returna = 0;
 
 %}
 
@@ -40,17 +40,9 @@
 %token _SEMICOLON
 %token <i> _AROP
 %token <i> _RELOP
-%token _COMMA
-%token _INC
-%token _DO
-%token _WHILE
 
-%type <i> type num_exp exp literal
-%type <i> function_call argument rel_exp
-%type <i> vars
-//ima dodatnu vrednost stavimo to <i>
-//ako negde stavim $$=nesto,moramo staviti ovde %type <i> taj iskaz
-%type <i> assignment												//dodajemo jer ce assignment da prima vrednost preko $$
+%type <i> num_exp exp literal function_call argument rel_exp
+
 %nonassoc ONLY_IF
 %nonassoc _ELSE
 
@@ -59,13 +51,9 @@
 program
   : function_list
       {  
-        int idx = lookup_symbol("main", FUN);
-        if(idx == -1)
+        if(lookup_symbol("main", FUN) == NO_INDEX)
           err("undefined reference to 'main'");
-        else 
-          if(get_type(idx) != INT)
-            warn("return type of 'main' is not int");
-      }
+       }
   ;
 
 function_list
@@ -74,35 +62,33 @@ function_list
   ;
 
 function
-  : type _ID
+  : _TYPE _ID
       {
         fun_idx = lookup_symbol($2, FUN);
-        if(fun_idx == -1)
+        if(fun_idx == NO_INDEX)
           fun_idx = insert_symbol($2, FUN, $1, NO_ATR, NO_ATR);
         else 
           err("redefinition of function '%s'", $2);
       }
     _LPAREN parameter _RPAREN body
       {
+				if( (get_type(fun_idx) != VOID ) && brojac_returna == 0 )
+					warn("Non-VOID fja ocekuje nesto kao povratnu vrednost !");
+				brojac_returna=0;												//kako bi u sledecoj fji-krenuo brojac_returna od 0
         clear_symbols(fun_idx + 1);
         var_num = 0;
       }
-  ;
-
-type
-  : _TYPE
-      { $$ = $1; }
   ;
 
 parameter
   : /* empty */
       { set_atr1(fun_idx, 0); }
 
-  | type _ID
+  | _TYPE _ID
       {
-				if($1 == VOID)
-					err("Parametar,promenljiva ne mogu biti tipa VOID !");
-				
+				if ( $1 == VOID )
+					err("Parametar/promenljiva ne mogu biti tipa void !");				
+
         insert_symbol($2, PAR, $1, 1, NO_ATR);
         set_atr1(fun_idx, 1);
         set_atr2(fun_idx, $1);
@@ -119,39 +105,17 @@ variable_list
   ;
 
 variable
-  : vars _SEMICOLON
-
-  ;
-
-vars
-	: type _ID
+  : _TYPE _ID _SEMICOLON
       {
-				//provera da li postoji ta promenljiva,ako ne postoji,dodaj je,ako postoji vec onda je greska
-        if(lookup_symbol($2, VAR|PAR) == -1)
+				if ( $1 == VOID )
+					err("Promenljiva/parametar ne mogu biti tipa void !");
+				
+        if(lookup_symbol($2, VAR|PAR) == NO_INDEX)
            insert_symbol($2, VAR, $1, ++var_num, NO_ATR);
         else 
            err("redefinition of '%s'", $2);
-				if($1 == VOID )
-					 err("promenljiva ne moze biti tipa VOID !");
-				$$=$1;
-				//vars nosi sad tip 
-				//jer $$ je vrednost pojma s leve strane pravila
-				//gore moramo dodati %type <i> vars ili %type <s> vars ako hocemo vars
-				//da ima mogucnost da bude tipa string
-				//vars ce nositi type,kako bi posle mogli da znamo koji je tip 
       }
-
-	| vars _COMMA _ID
-      {
-				//u $1 tj u varsu je type od gore ( $$ = $1)
-        if(lookup_symbol($3, VAR|PAR) == -1)
-           insert_symbol($3, VAR, $1, ++var_num, NO_ATR);
-        else 
-           err("redefinition of '%s'", $3);
-				$$=$1;
-				//ako imam 3,4,5... promenljivih da za tu 3,4,5.. znamo tip      
-      }
-	;
+  ;
 
 statement_list
   : /* empty */
@@ -163,7 +127,6 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
-	| do_while
   ;
 
 compound_statement
@@ -171,33 +134,16 @@ compound_statement
   ;
 
 assignment_statement
-  : assignment num_exp _SEMICOLON
-	{
-		if(get_type($1) != get_type($2) )		//provera da li je promenljiva s leve strane istog tipa kao i izraz sa desne
-			err("Uneta promenljiva nije korespodentnog tipa kao i numericki izraz !");
-	}
+  : _ID _ASSIGN num_exp _SEMICOLON
+      {
+        int idx = lookup_symbol($1, VAR|PAR);
+        if(idx == NO_INDEX)
+          err("invalid lvalue '%s' in assignment", $1);
+        else
+          if(get_type(idx) != get_type($3))
+            err("incompatible types in assignment");
+      }
   ;
-
-assignment
-	: _ID _ASSIGN
-	{
-		indeks1 = lookup_symbol($1,VAR|PAR);
-		if(indeks1 == -1)										//provera da li ta promenljiva uopste postoji
-			err("Uneta je promenljiva koja uopste ne postoji ! ");
-		$$=indeks1;													//prenosimo njen indeks u assignment
-	}
-	| assignment _ID _ASSIGN
-	{
-		indeks2=lookup_symbol($2,VAR|PAR);
-		if(indeks2 == -1)										//provera da li ta promenljiva uopste postoji
-			err("Uneta je promenljiva koja uopste ne postoji ! ");
-		
-		if(get_type(indeks2) != get_type($1) )
-			err("Unete promenljive s leve i desne strane nisu istog tipa!");
-		$$=indeks2;													//prenosimo njen indeks u assignment
-		
-	}
-	;
 
 num_exp
   : exp
@@ -213,16 +159,9 @@ exp
   | _ID
       {
         $$ = lookup_symbol($1, VAR|PAR);
-        if($$ == -1)
+        if($$ == NO_INDEX)
           err("'%s' undeclared", $1);
       }
-	| _ID _INC
-      {
-        $$ = lookup_symbol($1, VAR|PAR);
-        if($$ == -1)
-          err("'%s' undeclared", $1);
-      }
-		
   | function_call
   | _LPAREN num_exp _RPAREN
       { $$ = $2; }
@@ -240,7 +179,7 @@ function_call
   : _ID 
       {
         fcall_idx = lookup_symbol($1, FUN);
-        if(fcall_idx == -1)
+        if(fcall_idx == NO_INDEX)
           err("'%s' is not a function", $1);
       }
     _LPAREN argument _RPAREN
@@ -275,20 +214,6 @@ if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
 
-do_while
-	:	_DO statement _WHILE _LPAREN _ID _RELOP literal _RPAREN _SEMICOLON
-		{
-			int index=lookup_symbol($5,VAR|PAR);
-			if(index == -1){
-				err("promenljiva ne postoji u tvom kodu");
-			}
-			if( get_type(index) != get_type($7) ){
-				err("promenljiva i literal moraju biti istog tipa!");
-			}
-
-		}
-	;
-
 rel_exp
   : num_exp _RELOP num_exp
       {
@@ -300,21 +225,21 @@ rel_exp
 return_statement
   : _RETURN num_exp _SEMICOLON
       {
-				if(get_type(fun_idx) == VOID)
-					err("Funkcija ne moze vratiti vrednost,jer je tipa VOID");
-				else{
-					// u slucaju da nije void tipa,treba proveriti konzistentnost tipa promenljive i fje
-		      if(get_type(fun_idx) != get_type($2))
-		        err("incompatible types in return");
+				if(get_type(fun_idx) == VOID )
+					err("Ne moze VOID fja da vrati vrednost !");				
+
+        if(get_type(fun_idx) != get_type($2))
+          err("incompatible types in return");
 				
-				}
+				brojac_returna++;
       }
 	| _RETURN _SEMICOLON
 			{
 				if(get_type(fun_idx) != VOID )
-					err("Funkcija mora da bude tipa void jer ste napisali return ; ");
-			}
+					warn("Fja nije VOID tipa i ocekuje se da vrati neku vrednost.");
 
+				brojac_returna++;
+			}
   ;
 
 %%
@@ -345,8 +270,8 @@ int main() {
     printf("\n%d error(s).\n", error_count);
 
   if(synerr)
-    return -1;
+    return -1; //syntax error
   else
-    return error_count;
+    return error_count; //semantic errors
 }
 

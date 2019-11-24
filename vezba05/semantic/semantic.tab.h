@@ -60,11 +60,7 @@ extern int yydebug;
     _SEMICOLON = 270,
     _AROP = 271,
     _RELOP = 272,
-    _COMMA = 273,
-    _INC = 274,
-    _DO = 275,
-    _WHILE = 276,
-    ONLY_IF = 277
+    ONLY_IF = 273
   };
 #endif
 
@@ -78,7 +74,7 @@ union YYSTYPE
   int i;
   char *s;
 
-#line 82 "semantic.tab.h" /* yacc.c:1909  */
+#line 78 "semantic.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

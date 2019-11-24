@@ -1,15 +1,17 @@
-//OPIS: imam fju tipa void i fju tipa main jedna nema povratnu vrednost, a druga ima 
-void f(){
-	// return 1; prijavice gresku jer ne moze da vrati broj
+//OPIS: Test fajl
+void pero(){
+	
+	//semanticka greska: return 5;
 }
+
+//semanticka greska: void pero(void a){ }
+
 int main() {
-    int a,b,c;
+    int a;
 
-    do
-      b = c = a + 1;
-    while (b < 100);
-
-		// return ; prijavice gresku jer nije fja tipa void
 		return 1;
+		//warning: ako ostavimo NON-void fju bez povratnog parametra 
+		//warning: return ;
+		//semanticka greska: void b;
 }
 

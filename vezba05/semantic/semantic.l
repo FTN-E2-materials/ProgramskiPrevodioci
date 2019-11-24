@@ -17,10 +17,6 @@
 "if"                 { return _IF; }
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
-","									 { return _COMMA; }
-"++"								 { return _INC; }
-"do"								 { return _DO; }
-"while"							 { return _WHILE;}
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }
