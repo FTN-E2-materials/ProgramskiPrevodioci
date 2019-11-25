@@ -27,6 +27,10 @@
 %token _IF
 %token _ELSE
 %token _RETURN
+%token _FOR
+%token _DOWNTO
+%token _DO
+
 %token <s> _ID
 %token <s> _INT_NUMBER
 %token <s> _UINT_NUMBER
@@ -84,6 +88,7 @@ parameter
         insert_symbol($2, PAR, $1, 1, NO_ATR);
         set_atr1(fun_idx, 1);
         set_atr2(fun_idx, $1);
+	
       }
   ;
 
@@ -103,6 +108,7 @@ variable
            insert_symbol($2, VAR, $1, ++var_num, NO_ATR);
         else 
            err("redefinition of '%s'", $2);
+	
       }
   ;
 
@@ -116,6 +122,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | for_statement
   ;
 
 compound_statement
@@ -202,6 +209,27 @@ if_statement
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
+
+
+for_statement
+  : _FOR _ID
+     {
+	//provera da li je for_variable prethodno definisana
+	//printf("promenljiva %s sa indeksom %d",$2,lookup_symbol($2, VAR|PAR));
+	if(lookup_symbol($2, VAR|PAR) == NO_INDEX){
+	  err("Lice....pa kako mozes staviti u for promenljivu ,koju nisi prethodno deklarisao/definisao [ERROR]");
+	}
+     }
+   _ASSIGN literal _DOWNTO literal 
+     {
+	//provera da li su init_constant i final_const tipovi kao i for_variable
+	int idx = lookup_symbol($2, VAR|PAR);
+	if(get_type(idx) != get_type($5) || get_type(idx) != get_type($7) )
+	  err("Brt... koja ti fora staviti promenljivu koja nije istog tipa kao konstante..[ERROR]");
+     }
+   _DO statement
+  ;
+
 
 rel_exp
   : num_exp _RELOP num_exp

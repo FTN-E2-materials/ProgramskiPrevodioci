@@ -15,6 +15,9 @@
 "if"                 { return _IF; }
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
+"for"		     { return _FOR; }
+"downto"	     { return _DOWNTO; }
+"do"		     { return _DO; }
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }
