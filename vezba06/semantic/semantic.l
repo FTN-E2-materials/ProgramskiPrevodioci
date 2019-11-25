@@ -15,6 +15,12 @@
 "if"                 { return _IF; }
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
+"switch"						 { return _SWITCH; }
+"case"							 { return _CASE; }
+":"									 { return _COLUMN; }
+"break"							 { return _BREAK; }
+"default"						 { return _DEFAULT; }
+
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }

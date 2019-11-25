@@ -49,18 +49,23 @@ extern int yydebug;
     _IF = 259,
     _ELSE = 260,
     _RETURN = 261,
-    _ID = 262,
-    _INT_NUMBER = 263,
-    _UINT_NUMBER = 264,
-    _LPAREN = 265,
-    _RPAREN = 266,
-    _LBRACKET = 267,
-    _RBRACKET = 268,
-    _ASSIGN = 269,
-    _SEMICOLON = 270,
-    _AROP = 271,
-    _RELOP = 272,
-    ONLY_IF = 273
+    _SWITCH = 262,
+    _CASE = 263,
+    _COLUMN = 264,
+    _BREAK = 265,
+    _DEFAULT = 266,
+    _ID = 267,
+    _INT_NUMBER = 268,
+    _UINT_NUMBER = 269,
+    _LPAREN = 270,
+    _RPAREN = 271,
+    _LBRACKET = 272,
+    _RBRACKET = 273,
+    _ASSIGN = 274,
+    _SEMICOLON = 275,
+    _AROP = 276,
+    _RELOP = 277,
+    ONLY_IF = 278
   };
 #endif
 
@@ -69,12 +74,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 22 "semantic.y" /* yacc.c:1909  */
+#line 25 "semantic.y" /* yacc.c:1909  */
 
   int i;
   char *s;
 
-#line 78 "semantic.tab.h" /* yacc.c:1909  */
+#line 83 "semantic.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

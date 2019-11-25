@@ -17,6 +17,9 @@
   int fun_idx = -1;
   int fcall_idx = -1;
 	int brojac_bloka=0;
+	int idxSWI=0;									// indeks svic promenljive
+	int korisceni_literali[100];	// smestam literale iz case-a koji su se iskoristili
+	int index_literala=0;					// koristi za indeks u trenutnom nizu korisceni_literali
 %}
 
 %union {
@@ -28,6 +31,12 @@
 %token _IF
 %token _ELSE
 %token _RETURN
+%token _SWITCH
+%token _CASE
+%token _COLUMN
+%token _BREAK
+%token _DEFAULT
+
 %token <s> _ID
 %token <s> _INT_NUMBER
 %token <s> _UINT_NUMBER
@@ -39,6 +48,7 @@
 %token _SEMICOLON
 %token <i> _AROP
 %token <i> _RELOP
+
 
 %type <i> num_exp exp literal function_call argument rel_exp
 
@@ -118,6 +128,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+	| switch_statement
   ;
 
 compound_statement
@@ -215,6 +226,62 @@ if_statement
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
+
+switch_statement
+	:	_SWITCH _LPAREN _ID
+		{
+			idxSWI = lookup_symbol($3, VAR|PAR);
+      if(idxSWI == NO_INDEX)
+				err("Promenljiva '%s' nije prethodno deklarisana",$3);
+		}	
+	 _RPAREN _LBRACKET case_statements default_statement _RBRACKET
+	;
+
+
+case_statements
+	: case_statement
+	| case_statements case_statement
+	;
+
+case_statement
+	: _CASE literal
+		{
+			//konstanta mora biti jedinstvena,prvo proverim da li je vec u nizu
+			int i=0;
+			
+			for(i;i<index_literala;i++){
+				if( korisceni_literali[i] == $2 ){
+					err("Pokusavas da koristis vec iskoristenu konstantu !");
+					break;
+				} 
+			}
+			
+			//ako nije duplikat ubacim konstantu u niz
+			korisceni_literali[index_literala] = $2;
+			index_literala++;
+			
+			//provera tipa konstante i tipa pr
+			//printf("\nIndex switch promenljive: %d ",idxSWI);
+			if ( get_type(idxSWI) != get_type($2) ){
+				err("Tip konstante i tip promenljive nisu korespodentni!");
+			}
+			//print_symtab();
+		}	
+	 _COLUMN statement break_statement
+	;
+
+break_statement
+	: /* empty */
+	|	_BREAK _SEMICOLON
+	;
+
+default_statement
+	: /* empty */
+	| _DEFAULT _COLUMN statement
+	;
+
+
+
 
 rel_exp
   : num_exp _RELOP num_exp
