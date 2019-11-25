@@ -1,30 +1,32 @@
 Zadatak 1
 
-Proširiti miniC gramatiku tako da omogući
+Prosiriti miniC gramatiku tako da omoguci 
 definisanje lokalnih promenljivih unutar bloka
-i realizovati sledeće semantičke provere:
+i realizovati adekvatne semanticke provere:
 - lokalna promenljiva koja je definisana unutar bloka
-  važi od momenta deklaracije do kraja tog bloka
-- ako postoje 2 promenljive koje se isto zovu
-  a definisane su u 2 ugnježdena bloka, onda
-  u unutrašnjem bloku važi unutrašnja promenljiva,
-  a u spoljašnjem bloku spoljašnja promenljiva.
+  vazi od momenta deklaracije do kraja tog bloka
+- ako postoje 2 promenljive koje se isto zovu 
+  a definisane su u 2 ugnjezdena bloka?
 
 Primer:
 
   int main() {
     int x;
     int y;
+
     x = 2;
     y = 3;
+
     {
       int x;        // nova promenljiva x (lokalna za ovaj blok)
       x = 5;
+
       y = x + y;    // y = 8; 
-                    // koristi se unutrašnja promenljiva x
-                    // i spoljašnja promenljiva y
+                    // koristi se unutrasnja promenljiva x
+                    // i spoljasnja promenljiva y
     }
-    return x + y;   // 10 (spoljašnji x i y)
+
+    return x + y;   // 10 (spoljasnji x i y)
   }
 
   int main() {
@@ -38,40 +40,49 @@ Primer:
   }
 
 
-POMOĆ:
+POMOC:
 - funkcija print_symtab() radi prikaz tabele simbola
-- polje atr2 za VAR je neiskorišćeno
+- polje atr2 za VAR je neiskorisceno
 - funkcija clear_symbols(begin_index) radi 
   brisanje tabele simbola od elementa begin_index
-- funkcija get_last_element() vraća indeks
-  poslednjeg popunjenog elementa iz tabele simbola
+- funkcija get_last_element() vraca 
+  indeks poslednjeg popunjenog elementa iz tabele simbola
 
 
-Zadatak2
+Zadatak 2
 
-Proširiti miniC gramatiku for iskazom koji ima sledeći oblik:
+Proširiti miniC gramatiku pojednostavljenim switch iskazom. 
+Sintaksa switch iskaza ima oblik:
 
-  "for" "(" <type> <id1> "=" <lit> ";" <relation> ";" <id2> "++" ")"
-     <stmt>
+"switch" "(" <switch_expression> ")" "{"
+    "case" <constant_expression> ":" <case_body> [ "break" ";" ]
+     ...
+    [ "default" ":" <default_statement> ]
+"}"
 
-gde je 
-<type> tip podatka (int ili unsigned)
-<id1> i <id2> su identifikatori
-<relation> relacioni izraz
-<stmt> statement
+<switch_expression> predstavlja ime promenljive
+<constant_expression> predstavlja konstantu
+<case_body> predstavlja iskaz (statement)
+<default_statement> predstavlja iskaz (statement)
+
+Pri tome:
+- Mora postojati bar jedna case naredba.
+- break naredba se opciono može pojaviti samo na kraju case naredbe.
+- default naredba je opciona i moze se pojaviti samo posle svih case naredbi
 
 Realizovati sledeće semantičke provere:
-a) <id1> treba da bude lokalna promenljiva za for iskaz
-   (sledeći for iskaz može da definiše iterator sa istim imenom)
-b) tip literala <lit> treba da bude isti kao tip promenljive <id1>
-c) <id1> i <id2> treba da budu ista promenljiva 
+- Promenljiva u <switch_expression> mora biti prethodno deklarisana
+- Konstante u svim case iskazima moraju biti jedinstvene
+- Tip konstante u case naredbi mora biti isti kao tip promenljive
+  u <switch_expression>
 
-NAPOMENA: Ispravno tretirati ugnježdene for iskaze.
+NAPOMENA: 
+Prilikom testiranja ne treba testirati ugnježdene switch iskaze.
 
-Primer ispravnog for iskaza:
-
-  int x;
-  x = 0;
-  for (int i = 0; i < 8; i++)
-    x = x + i;
+Primer:
+  switch(state) {
+    case 1: x = 1; break;
+    case 2: { x = 5;} break;
+    default: x = 10;
+  }
 

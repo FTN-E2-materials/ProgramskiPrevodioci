@@ -1,0 +1,26 @@
+Proširiti miniC gramatiku for iskazom koji ima sledeći oblik:
+
+  "for" "(" <type> <id1> "=" <lit> ";" <relation> ";" <id2> "++" ")"
+     <stmt>
+
+gde je 
+<type> tip podatka (int ili unsigned)
+<id1> i <id2> su identifikatori
+<relation> relacioni izraz
+<stmt> statement
+
+Realizovati sledeće semantičke provere:
+a) <id1> treba da bude lokalna promenljiva za for iskaz
+   (sledeći for iskaz može da definiše iterator sa istim imenom)
+b) tip literala <lit> treba da bude isti kao tip promenljive <id1>
+c) <id1> i <id2> treba da budu ista promenljiva 
+
+NAPOMENA: Ispravno tretirati ugnježdene for iskaze.
+
+Primer ispravnog for iskaza:
+
+  int x;
+  x = 0;
+  for (int i = 0; i < 8; i++)
+    x = x + i;
+

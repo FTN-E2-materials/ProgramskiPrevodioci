@@ -6,6 +6,7 @@
 #define FALSE 0
 
 #define SYMBOL_TABLE_LENGTH   64
+#define NO_INDEX              -1
 #define NO_ATR                 0
 #define LAST_WORKING_REG      12
 #define FUN_REG               13
@@ -22,8 +23,7 @@ extern int yyerror(char *s);
 
 
 //tipovi podataka
-enum types { NO_TYPE, INT, UINT,VOID };
-//crtica tj - je no_type ili no_kind
+enum types { NO_TYPE, INT, UINT };
 
 //vrste simbola (moze ih biti maksimalno 32)
 enum kinds { NO_KIND = 0x1, REG = 0x2, LIT = 0x4, 
