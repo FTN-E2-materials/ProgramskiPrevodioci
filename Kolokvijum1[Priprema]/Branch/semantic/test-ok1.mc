@@ -1,6 +1,7 @@
 //OPIS: okej test za BRANCH
 int main() {
 
+
 	int a;
   int b;
   branch ( a ; 2, 3, 4)
