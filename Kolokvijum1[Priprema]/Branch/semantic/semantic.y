@@ -27,6 +27,12 @@
 %token _IF
 %token _ELSE
 %token _RETURN
+%token _BRANCH
+%token _COMMA
+%token _FIRST
+%token _SECOND
+%token _THIRD
+
 %token <s> _ID
 %token <s> _INT_NUMBER
 %token <s> _UINT_NUMBER
@@ -116,6 +122,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+	| branch_statement
   ;
 
 compound_statement
@@ -202,6 +209,31 @@ if_statement
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
+
+
+branch_statement
+	:	_BRANCH _LPAREN _ID _SEMICOLON literal _COMMA literal _COMMA literal _RPAREN 
+			{
+				// provera da li je var prethodno definisana
+				// printf("var %s sa index-om: %d",$3,lookup_symbol($3, VAR|PAR));
+				if( lookup_symbol($3, VAR|PAR) == NO_INDEX){
+					err("Lice, koristis promenljivu koja nije prethodno definisana...");
+				}else{// provera da li su konstante istog tipa kao i var koja je prethodno definisana
+								
+					if((get_type(lookup_symbol($3, VAR|PAR)) != get_type($5)) || (get_type(lookup_symbol($3, VAR|PAR)) != get_type($7)) || (get_type(lookup_symbol($3, VAR|PAR)) != get_type($9)))
+						err("Brate... Pa promenljiva i konstante ne mogu biti razlicitog tipa...");					
+
+				}
+				
+				
+				
+				
+			}	
+		_FIRST statement _SECOND statement _THIRD statement
+	;
+
+
+
 
 rel_exp
   : num_exp _RELOP num_exp
