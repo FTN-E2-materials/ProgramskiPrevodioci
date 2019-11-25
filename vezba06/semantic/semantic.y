@@ -20,6 +20,9 @@
 	int idxSWI=0;									// indeks svic promenljive
 	int korisceni_literali[100];	// smestam literale iz case-a koji su se iskoristili
 	int index_literala=0;					// koristi za indeks u trenutnom nizu korisceni_literali
+
+	int brojac_fora=0;						// promenljiva koja sluzi da nam kaze u kom smo foru kako bi imali lokalne pr u foru tipa (int i=0;....)
+
 %}
 
 %union {
@@ -36,6 +39,8 @@
 %token _COLUMN
 %token _BREAK
 %token _DEFAULT
+%token _FOR
+%token _INC
 
 %token <s> _ID
 %token <s> _INT_NUMBER
@@ -129,6 +134,7 @@ statement
   | if_statement
   | return_statement
 	| switch_statement
+	| for_statement
   ;
 
 compound_statement
@@ -227,6 +233,52 @@ if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
 
+//  "for" "(" <type> <id1> "=" <lit> ";" <relation> ";" <id2> "++" ")"
+//     <stmt>
+//
+//gde je 
+//<type> tip podatka (int ili unsigned)
+//<id1> i <id2> su identifikatori
+//<relation> relacioni izraz
+//<stmt> statement
+
+//Realizovati sledeće semantičke provere:
+//a) <id1> treba da bude lokalna promenljiva za for iskaz
+//   (sledeći for iskaz može da definiše iterator sa istim imenom)
+//b) tip literala <lit> treba da bude isti kao tip promenljive <id1>
+//c) <id1> i <id2> treba da budu ista promenljiva 
+
+
+for_statement
+	:	_FOR _LPAREN _TYPE _ID
+			{
+				brojac_fora++;
+				if( lookup_symbol($4, VAR|PAR) != NO_INDEX && get_atr2(lookup_symbol($4, VAR|PAR)) == brojac_fora )
+					err("Izmena promenljive '%s'", $4);
+				else
+					$<i>$ = insert_symbol($4, VAR, $3, ++var_num, brojac_fora);														// cuvam u meta promenljivoj indeks da bi posle znao sta da obrisem
+																																																//insert symbol vraca indeks ubacenog elementa u tabeli simbola 
+			}	
+	 _ASSIGN literal
+			{
+				if ( get_type($7) != get_type(lookup_symbol($4, VAR|PAR) ) )
+					err("Promenljiva %s i literal %d nisu istog tipa !",$4,atoi(get_name($7)));
+			}
+	 _SEMICOLON rel_exp _SEMICOLON _ID
+			{
+				if ( get_name(lookup_symbol($4, VAR|PAR)) != get_name(lookup_symbol($12, VAR|PAR) ) )
+					err("Pazi : %s i %s moraju da budu iste promenljive !",$4,$12);
+			}	
+	 _INC _RPAREN statement
+			{
+				brojac_fora--;
+				print_symtab();
+				clear_symbols($<i>5);					//ZASTO MI SA $<i>4+1 ne radi ?????????????????????????????
+			}
+	;
+
+
+
 switch_statement
 	:	_SWITCH _LPAREN _ID
 		{
@@ -262,6 +314,8 @@ case_statement
 			
 			//provera tipa konstante i tipa pr
 			//printf("\nIndex switch promenljive: %d ",idxSWI);
+			printf("literal: %d ", $2);
+			
 			if ( get_type(idxSWI) != get_type($2) ){
 				err("Tip konstante i tip promenljive nisu korespodentni!");
 			}

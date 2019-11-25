@@ -1,19 +1,11 @@
-//OPIS: lokalne promenljive unutar bloka
+//OPIS: for petlja
 //RETURN: 26
 
 int main() {
-  int x;
-  int y;
-
-  x = 2;
-  y = 3;
-	{
-		int a;
-		{
-			int j;
-			j=3;
-		}
-	}
-	//a=3;
+ 	int x;
+  x = 0;
+  for (int i = 0; i < 8; i++)
+    x = x + i;
+	
 }
 

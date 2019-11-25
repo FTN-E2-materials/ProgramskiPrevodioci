@@ -20,8 +20,8 @@
 ":"									 { return _COLUMN; }
 "break"							 { return _BREAK; }
 "default"						 { return _DEFAULT; }
-
-
+"for"								 { return _FOR; }
+"++"								 { return _INC; }
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }
 "{"                  { return _LBRACKET; }
