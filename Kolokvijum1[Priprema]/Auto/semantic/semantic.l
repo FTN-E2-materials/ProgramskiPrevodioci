@@ -15,7 +15,7 @@
 "if"                 { return _IF; }
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
-
+"auto"							 { return _AUTO; }
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }

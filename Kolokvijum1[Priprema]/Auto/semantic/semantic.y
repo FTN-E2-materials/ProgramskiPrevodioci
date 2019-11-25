@@ -36,6 +36,8 @@
 %token _RBRACKET
 %token _ASSIGN
 %token _SEMICOLON
+%token _AUTO
+
 %token <i> _AROP
 %token <i> _RELOP
 
@@ -104,6 +106,13 @@ variable
         else 
            err("redefinition of '%s'", $2);
       }
+	|	_AUTO _ID _SEMICOLON
+      {
+        if(lookup_symbol($2, VAR|PAR) == NO_INDEX)
+           insert_symbol($2, VAR, 10, ++var_num, NO_ATR);						//stavljam 10 kao type da bi znao da je promenljiva tipa AUTO
+        else 
+           err("redefinition of '%s'", $2);
+      }
   ;
 
 statement_list
@@ -123,7 +132,18 @@ compound_statement
   ;
 
 assignment_statement
-  : _ID _ASSIGN num_exp _SEMICOLON
+  : _ID _ASSIGN num_exp 
+			{
+				//nadjemo kog je tipa num_exp i njega treba da dodelimo nasem _ID ako je _ID bio auto
+				//printf(" index: %d",lookup_symbol($1, VAR|PAR) );
+				printf("%d",lookup_symbol($1, VAR|PAR));
+				if(get_type(lookup_symbol($1, VAR|PAR)) == 10)
+					set_type(lookup_symbol($1, VAR|PAR), get_type($3) );
+				else
+					err("Ne mozes nekoj promenljivoj s poznatim tipom dodeliti promenljivu s AUTO tipom");
+				//print_symtab();
+			}	
+	_SEMICOLON
       {
         int idx = lookup_symbol($1, VAR|PAR);
         if(idx == NO_INDEX)
