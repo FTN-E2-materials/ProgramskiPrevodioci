@@ -15,6 +15,10 @@
 "if"                 { return _IF; }
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
+"compare"	     { return _COMPARE; }
+"greater"	     { return _GREATER; }
+"less"		     { return _LESS; }
+"equal"		     { return _EQUAL; }
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }

@@ -27,6 +27,11 @@
 %token _IF
 %token _ELSE
 %token _RETURN
+%token _COMPARE
+%token _GREATER
+%token _LESS
+%token _EQUAL
+
 %token <s> _ID
 %token <s> _INT_NUMBER
 %token <s> _UINT_NUMBER
@@ -116,6 +121,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | compare_statement
   ;
 
 compound_statement
@@ -201,6 +207,24 @@ if_statement
 
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
+  ;
+
+compare_statement
+  : _COMPARE _LPAREN _ID _SEMICOLON _ID
+      {
+	//provera da li su deklarisane
+	int idx1=lookup_symbol($3, VAR|PAR);
+	int idx2=lookup_symbol($5, VAR|PAR);
+	if(idx1==NO_INDEX)
+	  err("Promenljiva %s nije deklairsana",$3);
+	if(idx2==NO_INDEX)
+	  err("Promenljiva %s nije deklairsana",$5);
+	
+	//provera da li su istog tipa
+	if(get_type(idx1) != get_type(idx2))
+	  err("Promenljiva %s i %s moraju biti istog tipa",$3,$5);
+      }
+    _RPAREN _GREATER statement _LESS statement _EQUAL statement
   ;
 
 rel_exp
