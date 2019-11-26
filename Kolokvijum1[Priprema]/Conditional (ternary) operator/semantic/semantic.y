@@ -27,6 +27,9 @@
 %token _IF
 %token _ELSE
 %token _RETURN
+%token _QMARK
+%token _COLUMN
+
 %token <s> _ID
 %token <s> _INT_NUMBER
 %token <s> _UINT_NUMBER
@@ -40,6 +43,7 @@
 %token <i> _RELOP
 
 %type <i> num_exp exp literal function_call argument rel_exp
+%type <i> variable value					//kako bi mogao da prenosim preko meta promenljivih podatke
 
 %nonassoc ONLY_IF
 %nonassoc _ELSE
@@ -103,6 +107,7 @@ variable
            insert_symbol($2, VAR, $1, ++var_num, NO_ATR);
         else 
            err("redefinition of '%s'", $2);
+	$$ = lookup_symbol($2, VAR|PAR);		//prenesem preko variable indeks promenljive
       }
   ;
 
@@ -116,6 +121,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | ternary_statement
   ;
 
 compound_statement
@@ -202,6 +208,21 @@ if_statement
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
+
+ternary_statement
+  : rel_exp _QMARK value _COLUMN value
+      {
+	if( get_type($3) != get_type($5) )
+	  err("Operandi moraju biti istog tipa.");
+      }
+  ;
+
+value
+  : variable { $$ = $1; }			//prenosim preko value indeks
+  | literal { $$ = $1; }			//takodje
+// ima konflikt kad stavim ovo ,jer u parameter ima empty jedan slucaj | parameter
+  ;
+
 
 rel_exp
   : num_exp _RELOP num_exp

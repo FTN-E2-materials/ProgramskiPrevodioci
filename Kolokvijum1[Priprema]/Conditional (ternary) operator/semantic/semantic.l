@@ -16,6 +16,9 @@
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
 
+":"		     { return _COLUMN; }
+"?" 		     { return _QMARK; }
+	     
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }
 "{"                  { return _LBRACKET; }
