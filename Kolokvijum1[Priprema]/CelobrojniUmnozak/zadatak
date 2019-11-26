@@ -1,0 +1,12 @@
+Read ID from <id1, id2, id3...>
+DATA <c1, c2, c3...>
+DO stm
+
+c - konstante (literali)
+id - promjenljive
+stm - statement
+
+* Tip literala i promjenljivih mora biti isti
+* Broj literala mora biti cjelobrojni umnozak broj id-eva
+npr. ako imamo 2 ID-a, broj literala moze biti samo 2*n, gdje je n cijeli broj. (2, 4, 6, 8...)
+* Promjenljive moraju biti prethodno definisane
