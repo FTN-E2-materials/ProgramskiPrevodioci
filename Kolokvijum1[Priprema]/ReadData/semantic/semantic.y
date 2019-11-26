@@ -16,6 +16,7 @@
   int var_num = 0;
   int fun_idx = -1;
   int fcall_idx = -1;
+  int idxPR=0;						//promenljiva koja cuva indeks naseg _ID kad proveravama da li je istog tipa kao konstante
 %}
 
 %union {
@@ -27,6 +28,12 @@
 %token _IF
 %token _ELSE
 %token _RETURN
+%token _READ
+%token _DATA
+%token _DO
+%token _FROM
+%token _COMMA
+
 %token <s> _ID
 %token <s> _INT_NUMBER
 %token <s> _UINT_NUMBER
@@ -116,6 +123,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | read_statement
   ;
 
 compound_statement
@@ -201,6 +209,39 @@ if_statement
 
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
+  ;
+
+read_statement
+  : _READ _ID
+      {
+	//provera da li je id prethodno deklarisan
+	idxPR=lookup_symbol($2, VAR|PAR);
+	if(idxPR == NO_INDEX)
+	  err("Promenljiva %s nije prethodno deklarisana ! [ERROR]",$2);
+      }
+    _FROM data_statements _DO statement 
+  ;
+
+data_statements
+  : data_statement
+  | data_statements data_statement 
+  ;
+
+data_statement
+  : _DATA const_statements
+  ;
+
+const_statements
+  : literal 
+     {
+	if(get_type(idxPR) != get_type($1) )
+	  err("Promenljiva i konstanta nisu istog tipa !");
+     }
+  | const_statements _COMMA literal
+     {
+	if( get_type(idxPR) != get_type($3) )
+	  err("Promenljiva i konstanta nisu istog tipa !");
+     }
   ;
 
 rel_exp

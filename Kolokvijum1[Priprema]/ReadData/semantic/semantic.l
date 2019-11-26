@@ -15,6 +15,11 @@
 "if"                 { return _IF; }
 "else"               { return _ELSE; }
 "return"             { return _RETURN; }
+"read"		     { return _READ; }
+"data"		     { return _DATA; }
+"do"		     { return _DO; }
+"from"		     { return _FROM; }
+","		     { return _COMMA;}
 
 "("                  { return _LPAREN; }
 ")"                  { return _RPAREN; }
