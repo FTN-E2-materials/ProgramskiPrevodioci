@@ -1,0 +1,22 @@
+Realizovati zadanu for petlju:
+
+    "for" "(" <id> "in" "range" <const1> : <const2> ")" iskaz
+
+
+<id> je promenljiva ili parametar 
+<const1> i <const2> su konstante/brojevi
+iskaz - statement
+
+
+Potrebno je izvrsiti sledece semanticke provere:
+<id> mora biti prethodno deklarisana
+<const1> i <const2> da li su istog tipa kao i <id>
+<const1> mora biti manje od <const2>
+
+
+Primer:
+  	int a;
+    	int x;
+    	for ( a in range 1 : 3)
+       		x = a + 1;
+
