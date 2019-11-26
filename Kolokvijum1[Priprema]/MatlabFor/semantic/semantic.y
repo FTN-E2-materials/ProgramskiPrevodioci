@@ -27,6 +27,9 @@
 %token _IF
 %token _ELSE
 %token _RETURN
+%token _FOR
+%token _COLUMN
+
 %token <s> _ID
 %token <s> _INT_NUMBER
 %token <s> _UINT_NUMBER
@@ -40,6 +43,7 @@
 %token <i> _RELOP
 
 %type <i> num_exp exp literal function_call argument rel_exp
+%type <i> variable_or_const				//kako bi mogao prenositi indekse 
 
 %nonassoc ONLY_IF
 %nonassoc _ELSE
@@ -116,6 +120,7 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | for_statement
   ;
 
 compound_statement
@@ -202,6 +207,31 @@ if_statement
 if_part
   : _IF _LPAREN rel_exp _RPAREN statement
   ;
+
+
+for_statement
+  : _FOR _ID _ASSIGN variable_or_const _COLUMN variable_or_const statement
+     {
+    	//provera tipa _ID
+	int idx =  lookup_symbol($2, VAR|PAR) ;
+	if(idx== NO_INDEX)
+	  err("Moras imati deklarisanu promenljivu %s pre nego sto je koristis",$2);
+	if(get_type(idx) != get_type($4) || get_type(idx) != get_type($6) || get_type($4) != get_type($6))
+	  err("Nisu korespodentni tipovi !");
+      }
+  ;
+
+
+variable_or_const
+  : literal { $$ = $1; }
+  | _ID 
+     {
+	$$ = lookup_symbol($1, VAR|PAR);
+	if($$ == -1)
+	 err("Promenljiva nije definisana");
+     }
+  ;
+
 
 rel_exp
   : num_exp _RELOP num_exp
