@@ -1,3 +1,53 @@
+<h1 align="center"> Hipotetski asemblerski jezik </h1>
+<p align="center">
+  <img width="600" height="200" src="https://i.pinimg.com/originals/8b/7b/c7/8b7bc7c76af65bfa61d0f974409b3a17.jpg">
+</p> <br>
+
+Podrazumeva se da registri i memorijske lokacije zauzimaju po 4 bajta a ukupno imamo 16 registara:
+  - %0-$12 su registri *opste namene*
+  - %13 - rezervisan za *povratna vrednost* funkcije
+  - %14 - sluzi kao *pokazivac frejma*
+  - %15 - sluzi kao *pokazivac steka
+
+### Labele
+Zapocinje malim slovom iza koga mogu da slede mala slova, cifre i podcrta (npr. **f:**, **main:** ) a imamo i **sistemske labele** koje zapocinju znakom '**@**'(npr. **@if:**, **@f_body:**, **@exit1:**)
+
+## Operandi
+  - **Neposredni operand**
+    - Odgovara celom(oznacenom ili neoznacenom) broju: $0 ili $-152, a njegova vrednost vrednosti tog broja,dok $labela odgovara adresi labele labela.
+  - **Registarski operand**
+    - Odgovara oznaci registra, a njegova vrednost sadrzaju tog registra
+  - **Direktni operand**
+    - Odgovara labeli, njegova vrednost odgovara adresi labele,ako ona oznacava naredbu i koristi se kao operand naredbe skokka ili poziva potprograma. Ako direktni operand odgovara labeli koja oznacava direktivu i ne koristi se kao operand naredbe skoka ili poziva potprograma, njegova vrednost odgovara sadrzaju adresirane lokacije.
+  - **Indirektni operand**
+    - Odgovara oznaci registra navednoj izmedju malih zagrada : (%0) a njegova vrednost sadrzaju memorijske lokacije koju adresira sadrzaj registra
+  - **Indeksni operand**
+    - zapocinje celim ( oznacenim ili neoznacenim) brojem ili labelom iza cega sledi oznaka registra navedena izmedju malih zagrada: -8(%14) ili 4(%14) ili tabela(%0) gde njegova vrednost odgovara sadrzaju memorijske lokacije koju adresira zbir vrednosti broja i sadrzaja registra, odnosno *zbir adrese labele i sadrzaja registra*
+
+Operandi se dele na 
+  - ulazne(sve vrste operanada)
+  - izlazne( sve vrste bez neposrednog)
+
+## Neke od naredbi
+  - naredba **poredjenja** brojeva postavlja bite status registra u skladu sa razlikom prvog i drugog ulaznog operanda:
+    - **CMPx ulazni operand, ulazni operand**
+  - naredba **bezusluvnog skoka** smesta u programski brojac vrednost ulaznog operanda ( omogucujuci tako nastavak izvrsavanja od ciljne naredbe koju adresira ova vrednost): 
+    - **JMP ulazni operand**
+  - naredba **uslovnog skoka** smestaju u programski brojac vrednost ulaznog operanda samo ako je ispunjen uslov odredjen kodom naredbe( gde ispunjenost uslova zavisi od bita status registra): 
+    - **JEQ,JNE,JGTx,JLTx,JGEx,JLEx ulazni operand**
+  - naredbe **rukovanja stekom** omogucuju smestanje na vrh steka vrednosti ulaznog operanda,odnosno preuzimanje vrednosti sa vrha steka i njeno smestanje u izlazni operand:
+    - **PUSH ulazni operand**
+    - **POP izlazni operand**
+  - naredba **poziva potprograma** smesta na vrh steka zateceni sadrzaj programskog brojaca, a u programski brojac smesta vrednost ulaznog operanda:
+    - **CAL ulazni operand**
+  - naredba **povratka iz potprograma** preuzima vrednost sa vrha steka i smesta je u programski brojac
+    - **RET**
+  - naredba za **sabiranje brojeva**
+    - **ADDx ulazni operand, ulazni operand, izlazni operand
+  - naredba za **oduzimanje brojeva**
+    - **SUBx ulazni operand, ulazni operand, izlazni operand**
+    
+
 <h1 align="center"> Oporavak od greske - miniC </h1>
 <br>
 
@@ -130,9 +180,6 @@ Modifikator koji deklarise prioritet nekog pravila
 
 ### reduce-reduce konfilkt
 Javlja se ukoliko postoji 2 ili vise pravila koja se mogu primeniti na isti niz ulaznih simbola i to je **ozbiljna greska u gramatici** ! Bison ovo razresava tako sto bira pravilo koje je ranije navedeno, ali to nikako nije najpametnije resenje, pa je potrebno napraviti ucinkovitije izmene.
-
-
-
 
 
 
