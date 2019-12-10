@@ -144,7 +144,7 @@ Podrazumeva se da registri i memorijske lokacije zauzimaju po 4 bajta a ukupno i
   - %0-%12 su registri *opste namene*
   - %13 - rezervisan za *povratna vrednost* funkcije
   - %14 - sluzi kao *pokazivac frejma*
-  - %15 - sluzi kao *pokazivac steka
+  - %15 - sluzi kao *pokazivac steka*
 
 ### Labele
 Zapocinje malim slovom iza koga mogu da slede mala slova, cifre i podcrta (npr. **f:**, **main:** ) a imamo i **sistemske labele** koje zapocinju znakom '**@**'(npr. **@if:**, **@f_body:**, **@exit1:**)
@@ -155,7 +155,7 @@ Zapocinje malim slovom iza koga mogu da slede mala slova, cifre i podcrta (npr. 
   - **Registarski operand**
     - Odgovara oznaci registra, a njegova vrednost sadrzaju tog registra
   - **Direktni operand**
-    - Odgovara labeli, njegova vrednost odgovara adresi labele,ako ona oznacava naredbu i koristi se kao operand naredbe skokka ili poziva potprograma. Ako direktni operand odgovara labeli koja oznacava direktivu i ne koristi se kao operand naredbe skoka ili poziva potprograma, njegova vrednost odgovara sadrzaju adresirane lokacije.
+    - Odgovara labeli, njegova vrednost odgovara adresi labele,ako ona oznacava naredbu i koristi se kao operand naredbe skoka ili poziva potprograma. Ako direktni operand odgovara labeli koja oznacava direktivu i ne koristi se kao operand naredbe skoka ili poziva potprograma, njegova vrednost odgovara sadrzaju adresirane lokacije.
   - **Indirektni operand**
     - Odgovara oznaci registra navednoj izmedju malih zagrada : (%0) a njegova vrednost sadrzaju memorijske lokacije koju adresira sadrzaj registra
   - **Indeksni operand**
@@ -176,7 +176,7 @@ Operandi se dele na
     - **PUSH ulazni operand**
     - **POP izlazni operand**
   - naredba **poziva potprograma** smesta na vrh steka zateceni sadrzaj programskog brojaca, a u programski brojac smesta vrednost ulaznog operanda:
-    - **CAL ulazni operand**
+    - **CALL ulazni operand**
   - naredba **povratka iz potprograma** preuzima vrednost sa vrha steka i smesta je u programski brojac
     - **RET**
   - naredba za **sabiranje brojeva**
