@@ -65,7 +65,7 @@ global_list
   ; 
 
 global_var
-  : type _ID _SEMICOLON
+  : _TYPE _ID _SEMICOLON
       { 
         insert_symbol($2, GVAR, $1, NO_ATR, NO_ATR);
         code("\n%s:\n\t\t\tWORD\t1", $2);
