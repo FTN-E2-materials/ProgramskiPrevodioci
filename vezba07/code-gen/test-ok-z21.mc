@@ -1,9 +1,9 @@
 //OPIS: jedan inkrement
-//RETURN: 42
+//RETURN: 2
 
 int main() {
   int a;
-  a = 41;
+  a = 1;
   a++;
   return a;
 }

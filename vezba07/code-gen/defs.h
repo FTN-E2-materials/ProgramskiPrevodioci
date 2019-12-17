@@ -34,7 +34,7 @@ enum kinds { NO_KIND = 0x1, REG = 0x2, LIT = 0x4,
 //00001000
 //00010000
 //00100000
-//01000000 ovo je GVAR => 0x30
+//01000000 ovo je GVAR => 0x40
 
 
 //konstante arithmetickih operatora

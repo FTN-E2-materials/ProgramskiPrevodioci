@@ -43,6 +43,8 @@
 %token <i> _AROP
 %token <i> _RELOP
 
+%token _INC
+
 %type <i> num_exp exp literal
 %type <i> function_call argument rel_exp if_part
 
@@ -149,6 +151,19 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | inc_statement
+  ;
+inc_statement
+  : _ID _INC _SEMICOLON
+	{
+		int idx = lookup_symbol($1, VAR|PAR|GVAR);
+		if (idx == -1 )
+			err(" %s nije definisana !",$1);
+		code("\n\t\tADDS\t");
+       	 	gen_sym_name(idx);
+        	code(",$1,");
+        	gen_sym_name(idx);
+	}
   ;
 
 compound_statement
