@@ -1,0 +1,33 @@
+Zadatak ForIdIn
+
+Proširiti miniC iskaze for petljom koja izgleda ovako:
+
+  "for" <name> "in" "(" <lit1> ".." <lit2> ")" statement
+
+Gde je:
+<name> ime lokalne promenljive ili parametra
+<lit1>,<lit2>  literali
+ 
+<name> mora biti deklarisano pre upotrebe
+<name> i <li1t> i <lit2> treba da budu istog tipa
+
+Realizovati generisanje koda za iterator petlju.
+- Na pocetku, <name> je jednak <lit1>.
+- Ako je <lit1> manji ili jednak od <lit2>, odraditi statement pa inkrementovati prvi literal a potom se vratiti na pocetak for petlje.
+- Kraj petlje u tom slucaju je kada je <lit1> postao veci od <lit2>
+
+- A ako je <lit1> veci od <lit2>, odraditi statement pa dekrementovati prvi literal a potom se vratiti na pocetak for petlje.
+- Kraj petlje u tom slucaju je kada je <lit1> postao manji od <lit2>
+
+Napomena: Petlje mogu biti i ugnježdene.
+
+Primer:
+  int i;
+  int result;
+  result = 0;
+
+  for i in(1 .. 10){
+    result = result + i;
+  }
+
+
