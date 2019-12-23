@@ -1,10 +1,10 @@
 //OPIS: Test iterator petlje
-//RETURN: 6
+//RETURN: 70
 int main() {
   int x;
   int y;
   y=0;
-  iterate x 1 to 3 {
+  iterate x 3 to 20 {
     y = x + y;
   }
   

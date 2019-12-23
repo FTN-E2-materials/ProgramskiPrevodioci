@@ -40,6 +40,8 @@
 %token _RBRACKET
 %token _ASSIGN
 %token _SEMICOLON
+%token _ITERATE
+%token _TO
 %token <i> _AROP
 %token <i> _RELOP
 
@@ -150,6 +152,55 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | iterate_statement
+  ;
+
+iterate_statement
+  : _ITERATE _ID
+	{	
+		int i = lookup_symbol($2, VAR|PAR ); 
+		if (i == NO_INDEX )
+			err("Promenljiva nije deklarisana !");
+		
+		code("\n\t\tMOV \t$1,");
+  		gen_sym_name(i);
+
+		$<i>$ = ++lab_num;
+        	code("\n@iterate%d:", lab_num);
+			
+	}
+    literal _TO literal
+	{	
+		int i = lookup_symbol($2, VAR|PAR);
+		if( get_type($4) != get_type($6) )
+			err("Korak i kraj iteracije nisu istog tipa !");
+		if( get_type(i) != get_type($4) || get_type(i) != get_type($6))
+			err("Literali nisu istog tipa kao promenljiva");
+
+		gen_cmp($6, i);
+		if(get_type(i) == INT)
+    		  code("\n\t\tJLTS \t");
+  		else
+    		  code("\n\t\tJLTU \t");
+		code("@kraj_iteratora%d",$<i>3);
+		
+	}
+    statement
+	{
+		int i = lookup_symbol($2, VAR|PAR);
+		if(get_type(i) == INT)
+    		  code("\n\t\tADDS \t");
+  		else
+    		  code("\n\t\tADDU \t");
+		gen_sym_name(i);
+		code(",");
+		gen_sym_name($4);
+		code(",");
+		gen_sym_name(i);
+
+		code("\n\t\tJMP\t@iterate%d",$<i>3);
+		code("\n@kraj_iteratora%d: ",$<i>3);
+	}
   ;
 
 
