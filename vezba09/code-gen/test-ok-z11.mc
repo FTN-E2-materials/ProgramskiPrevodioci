@@ -1,18 +1,21 @@
-//OPIS: provera switcha
-//RETURN: 1
-
+//OPIS: Test fora
+//RETURN: 100
 int main() {
-  int state;
-  int s;
-  state=10;
-  s=1;
+  int suma;
+  int i;
+  int j;
+  suma = 0;
+  for(i = 0; i < 5; i++){
+    for(j = 0; j < 2; j++){
+       suma = suma + 10;
+    }
+    suma = suma + i;
+  }
+ 
+  for(i = 0; i<5; i++){
+    suma = suma - i;
+  }
 
-  switch (state) {
-    case 10: { s = 1; } break;
-    case 20: s = 2;
-    default: s = 0;
-  } 
-
-  return s;
+  return suma;
 }
 

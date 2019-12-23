@@ -2,7 +2,7 @@ Zadatak 1
 
 Proširiti miniC iskaze for petljom koja izgleda ovako:
 
-  "for" _LPAREN <name> "=" <lit> ";" <rel> ";" <name> "++")
+  "for" "(" <name> "=" <lit> ";" <rel> ";" <name> "++" ")"
       <statement>
 
 gde je:

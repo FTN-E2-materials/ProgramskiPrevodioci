@@ -20,8 +20,6 @@
   int fcall_idx = -1;
   int lab_num = -1;
   FILE *output;
-
-  int reg=-1;
 %}
 
 %union {
@@ -42,18 +40,17 @@
 %token _RBRACKET
 %token _ASSIGN
 %token _SEMICOLON
+%token _COLON
+%token _FOR
+%token _INC
+
 %token <i> _AROP
 %token <i> _RELOP
-%token _SWITCH
-%token _BREAK
-%token _COLON
-%token _CASE
-%token _DEFAULT
+
 
 %type <i> num_exp exp literal
 %type <i> function_call argument rel_exp if_part
 
-%type <i> case_statements case_statement
 %nonassoc ONLY_IF
 %nonassoc _ELSE
 
@@ -157,100 +154,57 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
-  | switch_statement
+  | for_statement
   ;
 
-switch_statement
-  : _SWITCH _LPAREN _ID
+for_statement
+  : _FOR _LPAREN _ID 
 	{
-		if ( lookup_symbol($3, VAR|PAR) == NO_INDEX )
-			err("Lice,pa nije ti definisana promenljiva ... ");
-	}
-    _RPAREN _LBRACKET
-	{
+		if ( lookup_symbol($3, VAR|PAR ) == NO_INDEX )
+			err("Promenljiva mora biti deklarisana pre upotrebe");
 		$<i>$ = ++lab_num;
-		code("\n@switch%d:", lab_num);
-
-		/* OVAKO UZIMAM ONO STO KORISNIK STAVI U STATE
-			int indeks=lookup_symbol($3,VAR|PAR);			
-			int reg = take_reg();
-			gen_mov(indeks,reg);
-		*/
-		int indeks=lookup_symbol($3,VAR|PAR);			
-		reg = take_reg();				
-		// U reg cuvam  podatak o promenljivoj koja se nalazi u switch-u
-		//printf("\n\t\t prvi slobodan registar je: %d \n\n",reg);
-		gen_mov(indeks,reg);
-
 	}
-    case_statements 
+    _ASSIGN literal 
 	{
-		if ( get_type(lookup_symbol($3, VAR|PAR)) != get_type($8) )
-			err("Promenljiva i literali nisu istog tipa !");
-	}
+		int i = lookup_symbol($3, VAR|PAR );
+		if( get_type(i) != get_type($6))
+			err("Nisu istog tipa promenljiva i literal");
 
-    default_statement _RBRACKET
+
+		gen_mov($6,i);				// ..i = 0...
+        	code("\n@for%d:", $<i>4);
+	}
+    _SEMICOLON rel_exp
 	{
-		code("\n@exit%d:", $<i>7);
-		free_if_reg(reg);			//OSLOBADJAM REGISTAR
+		code("\n\t\t%s\t@kraj_fora%d",opp_jumps[$9],$<i>4);
 	}
-  ;
-
-case_statements
-  : case_statement { $$ = $1; }
-  | case_statements case_statement 
+    _SEMICOLON _ID 
+	{
+		if(lookup_symbol($12,VAR|PAR) == NO_INDEX)
+			err("Ne mozes iterirati kroz promenljivu koja ne postoji");
+	}
+    _INC _RPAREN statement
 	{	
-		if ( get_type($1) != get_type($2) )
-			err("Aj uspori, ne mogu literali biti razlicitog tipa !");
-		$$ = $2;
+		
+		
+		int i = lookup_symbol($3, VAR|PAR );
+		
+		// ...i++...
+		if(get_type(i) == INT)
+    			code("\n\t\tADDS \t");
+		else
+    			code("\n\t\tADDU \t");
+		gen_sym_name(i);
+ 		code(",$1,");
+  		gen_sym_name(i);
+
+
+		code("\n\t\tJMP\t@for%d",$<i>4);
+		code("\n@kraj_fora%d:",$<i>4);
 	}
   ;
 
-case_statement
-  : _CASE literal _COLON
-	{
-		code("\n@case%d:",atoi(get_name($2)));
-		//print_symtab();
-		/*
-			Iskoristio sam iz codegen.c deo funkcije gen_cmp
-			,samo nisam dozvolio da na kraju uradi free_if_reg(reg)
-			,jer taj reg cuvam
-		*/
-		if(get_type($2) == INT)
-    			code("\n\t\tCMPS \t");
-  		else
-    			code("\n\t\tCMPU \t");
-  		gen_sym_name($2);
-  		code(",");
-  		gen_sym_name(reg);
-		free_if_reg($2);
-  		//free_if_reg(reg);
 
-		code("\n\t\tJNE \t@case_kraj%d",atoi(get_name($2)));
-	}
-    statement break_statement 
-	{
-		code("\n@case_kraj%d:",atoi(get_name($2)));
-		$$ = $2;
-	}
-
-  ;
-break_statement
-  : /* empty */
-  | _BREAK _SEMICOLON
-	{
-		code("\n\t\tJMP \t@exit%d", lab_num);
-	}
-  ;
-default_statement
-  : /* empty */
-  | _DEFAULT _COLON 
-	{
-		code("\n@default%d:",lab_num);
-	}
-    statement
-
-  ;
 compound_statement
   : _LBRACKET statement_list _RBRACKET
   ;
@@ -258,14 +212,13 @@ compound_statement
 assignment_statement
   : _ID _ASSIGN num_exp _SEMICOLON
       {
-        int idx = lookup_symbol($1, VAR|PAR);
+        int idx = lookup_symbol($1, VAR|PAR|GVAR);
         if(idx == NO_INDEX)
           err("invalid lvalue '%s' in assignment", $1);
         else
           if(get_type(idx) != get_type($3))
             err("incompatible types in assignment");
         gen_mov($3, idx);
-
       }
   ;
 
