@@ -1,0 +1,30 @@
+Zadatak Iterate
+
+Proširiti miniC iskaze iterator petljom koja izgleda ovako:
+
+  "iterate" <name> <lit1> "to" <lit2> statement
+
+Gde je:
+<name> ime lokalne promenljive ili parametra
+<lit1>  literal koji predstavlja korak
+<lit2>  literal koji predstavlja kraj iteracije
+
+<name> mora biti deklarisano pre upotrebe
+<name> i <li1t> i <lit2> treba da budu istog tipa
+
+Realizovati generisanje koda za iterator petlju.
+- Na pocetku, iterator je jednak jedinci tj. <name> je na jedinici.
+- Tačnost relacije se proverava na početku svake iteracije i izvrsava se dokle god je <name> <= <lit2>.
+- Inkrementiranje iteratora se vrši na kraju svake iteracije.
+
+Napomena: Petlje mogu biti i ugnježdene.
+
+Primer:
+  int x;
+  int y;
+  y=0;
+  iterate x 3 to 20 {
+    y = x + y;
+  }
+
+
