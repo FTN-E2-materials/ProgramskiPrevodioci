@@ -22,6 +22,9 @@
 "}"                  { return _RBRACKET; }
 ";"                  { return _SEMICOLON; }
 "="                  { return _ASSIGN; }
+"for"		     { return _FOR; }
+"in"		     { return _IN; }
+".."		     { return _DOTS; }
 
 
 "+"                  { yylval.i = ADD; return _AROP; }

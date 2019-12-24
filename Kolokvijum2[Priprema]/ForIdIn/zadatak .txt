@@ -19,7 +19,6 @@ Realizovati generisanje koda za iterator petlju.
 - A ako je <lit1> veci od <lit2>, odraditi statement pa dekrementovati prvi literal a potom se vratiti na pocetak for petlje.
 - Kraj petlje u tom slucaju je kada je <lit1> postao manji od <lit2>
 
-Napomena: Petlje mogu biti i ugnježdene.
 
 Primer:
   int i;

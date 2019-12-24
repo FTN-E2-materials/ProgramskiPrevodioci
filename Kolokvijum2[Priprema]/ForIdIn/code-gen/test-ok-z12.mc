@@ -5,7 +5,7 @@ int main() {
   int result;
   result = 0;
 
-  for i in(1 .. 5){		
+  for i in(5 .. 1){		
     result = result + i;
   }
 

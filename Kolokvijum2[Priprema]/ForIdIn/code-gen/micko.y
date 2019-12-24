@@ -19,6 +19,8 @@
   int fun_idx = -1;
   int fcall_idx = -1;
   int lab_num = -1;
+  int flegIncOrDec = -1;
+  int flegReg = -1;
   FILE *output;
 %}
 
@@ -40,6 +42,10 @@
 %token _RBRACKET
 %token _ASSIGN
 %token _SEMICOLON
+%token _FOR
+%token _DOTS
+%token _IN
+
 %token <i> _AROP
 %token <i> _RELOP
 
@@ -150,6 +156,137 @@ statement
   | assignment_statement
   | if_statement
   | return_statement
+  | for_statement
+  ;
+
+for_statement
+  : _FOR _ID 
+	{
+		int i = lookup_symbol($2, VAR|PAR);
+		if(i == NO_INDEX)
+			err("Promenljiva ne postoji");
+		
+		flegReg = take_reg();				// uzimam reg u kom cuvam da li se radi inc ili dec
+		code("\n\t\tMOV\t$0,");				// cuvam 0 trenutno 
+		gen_sym_name(flegReg);
+	}
+    _IN _LPAREN literal
+	{
+		$<i>$ = ++lab_num;				// zbog ugnjezdenih for-ova
+		int i = lookup_symbol($2, VAR|PAR);
+
+		gen_mov($6,i);					// Na pocetku, <name> je jednak <lit1>.
+		// proverim da li je <lit1> veci ili <lit2>
+        	code("\n@for%d:", lab_num);
+	}
+    _DOTS literal
+	{
+		int i = lookup_symbol($2, VAR|PAR);
+		if( get_type(i) != get_type($6) || get_type(i) != get_type($9) )
+			err("Promenljiva i literali moraju biti istog tipa");
+		if( get_type($6) != get_type($9))
+			err("Literali moraju biti istog tipa.");
+
+		gen_cmp($6,$9);
+		if(get_type($6) == INT)				// ako je prvi parametar manji jednak radimo inc, inace dec
+    			code("\n\t\tJLES \t");			
+  		else
+    			code("\n\t\tJLEU \t");
+		code("@inc%d",$<i>7);				// skok na inc
+		code("\n@dec%d:",$<i>7);			// labela dec
+		  code("\n\t\tMOV\t$1,");			// cuvam 1 za dec 
+		  gen_sym_name(flegReg);
+ 
+		code("\n\t\tJMP\t@statement_fora%d",$<i>7);	// kad zavrsimo sa dec idemo na statement_for kako ne bi inc izvrsili
+
+		code("\n@inc%d:",$<i>7);			// labela inc
+		  code("\n\t\tMOV\t$2,");			// cuvam 2 za inc
+		  gen_sym_name(flegReg);
+	}
+    _RPAREN 
+	{
+		int i = lookup_symbol($2, VAR|PAR);
+		code("\n@statement_fora%d:",$<i>7);
+		// provera da li je zavrsena petlja 
+		// ako je bio inkrement _ID mora da je > lit2 da bi bio kraj
+		// ako je bio dekrement _ID mora da je <  lit2 da bi bio kraj
+		
+		if(get_type(flegReg) == INT)
+		    code("\n\t\tCMPS \t");
+		else
+		    code("\n\t\tCMPU \t");
+		gen_sym_name(flegReg);
+		code(",$1");					// proverim da li je 1 tj dekrement u pitanju
+								// ako jeste skacem na proveru kraja tj da li je _ID < lit2
+		code("\n\t\tJNE \t");				// ako nije dec onda je deo za inkrement
+		code("@provera_kraja_inc%d",$<i>7);		// skok na inkrement deo
+		code("\n@provera_kraja_dec%d:", $<i>7);		// labela za dekrement
+		  if(get_type(i) == INT)
+		    code("\n\t\tCMPS \t");
+		  else
+		    code("\n\t\tCMPU \t");
+		  gen_sym_name(i);
+		  code(",");
+		  gen_sym_name($9);
+		  if(get_type(i) == INT)
+		    code("\n\t\tJLTS \t");
+		  else
+		    code("\n\t\tJLTU \t");
+		  code("@kraj_fora%d",$<i>7);
+		  code("\n\t\tJMP\t@pocetak_sf%d",$<i>7);	// skok na labelu gde je pravi pocetak statementa
+
+		code("\n@provera_kraja_inc%d:",$<i>7);
+		  if(get_type(i) == INT)
+		    code("\n\t\tCMPS \t");
+		  else
+		    code("\n\t\tCMPU \t");
+		  gen_sym_name(i);
+		  code(",");
+		  gen_sym_name($9);
+		  if(get_type(i) == INT)
+		    code("\n\t\tJGTS \t");
+		  else
+		    code("\n\t\tJGTU \t");
+		  code("@kraj_fora%d",$<i>7);
+		
+		code("\n@pocetak_sf%d:",$<i>7);
+	}
+    statement
+	{
+		int i = lookup_symbol($2, VAR|PAR);
+
+		if(get_type(flegReg) == INT)
+		    code("\n\t\tCMPS \t");
+		else
+		    code("\n\t\tCMPU \t");
+		gen_sym_name(flegReg);
+		code(",$1");					// proverim da li je 1 tj dekrement u pitanju
+
+		code("\n\t\tJNE \t");				// ako nije dec onda je deo za inkrement
+		code("@inkrement_deo%d",$<i>7);			// skok na inkrement deo
+		code("\n@dekrement_deo%d:", $<i>7);		// labela za dekrement
+		  if(get_type($6) == INT)
+		    code("\n\t\tSUBS\t");
+		  else
+		    code("\n\t\tSUBU\t");
+		  gen_sym_name(i);
+		  code(",$1,");
+		  gen_sym_name(i);
+		  code("\n\t\tJMP\t@statement_fora%d",$<i>7);
+
+
+		code("\n@inkrement_deo%d:",$<i>7);
+		  if(get_type($6) == INT)
+		    code("\n\t\tADDS\t");
+		  else
+		    code("\n\t\tADDU\t");
+		  gen_sym_name(i);
+		  code(",$1,");
+		  gen_sym_name(i);
+		  code("\n\t\tJMP\t@statement_fora%d",$<i>7);
+
+		code("\n@kraj_fora%d:",$<i>7);
+	}
   ;
 
 
