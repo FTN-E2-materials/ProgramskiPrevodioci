@@ -224,7 +224,7 @@ Za svaki niz u tabeli simbola treba registrovati i broj njegovih elemenata
 <h1 align = "center"> Generisanje koda </h1> <br>
 <br>
 <p align="center">
-  <img width="800" height="450" src="https://wallpaperplay.com/walls/full/8/c/8/131306.jpg">
+  <img width="800" height="450" src="https://images.wallpapersden.com/image/wxl-minimal-glowing-code-binary_63680.jpg">
 </p>
 <br>
 
