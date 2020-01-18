@@ -11,3 +11,6 @@
 ###### V4 - Prosirivanje miniC gramatike i semantika [ vise promenljivih u deklaraciji , postinkrement operator , do while iskaz ]
 ###### V5 - Prosirivanje miniC gramatike i semantika [ void i return ; ]
 ###### v6 - Prosirivanje miniC gramatike i semantike [ lokalne promenljive unutar bloka i switch iskaz ]
+###### v7 - Generisanje koda [ globalne promenljive, postinkrement iskaz ]
+###### v8 - Generisanje koda [ ternari iskaz ]
+###### v9 - Generisanje koda [ for iskaz ]
