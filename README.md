@@ -14,3 +14,7 @@
 ###### v7 - Generisanje koda [ globalne promenljive, postinkrement iskaz ]
 ###### v8 - Generisanje koda [ ternari iskaz ]
 ###### v9 - Generisanje koda [ for iskaz ]
+<br>
+
+###### Kolokvijum[Pripreme] - primeri ( zadaci od proslih godina ) za kolokvijum.
+###### MiniSkripte - teorija koja je bitna za izradu zadataka i njihovo razumevanje a samim tim i za ispit odnosno otisak.
